@@ -1,0 +1,54 @@
+🚀 Initializing Z-AI SDK...
+🔎 Searching images: "modern wooden interior door design luxury pinterest"
+✅ Got 6 images
+{
+  "success": true,
+  "query": "modern wooden interior door design luxury pinterest",
+  "count": 6,
+  "ranked": false,
+  "captioned_count": 0,
+  "results": [
+    {
+      "original_url": "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/6121f8af3293.jpg",
+      "caption": "",
+      "source": "jp.pinterest.com",
+      "original_width": "736px",
+      "original_height": "1104px"
+    },
+    {
+      "original_url": "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/2cf75720cf1a.jpg",
+      "caption": "",
+      "source": "Rustic Luxe Designs",
+      "original_width": "2000px",
+      "original_height": "3000px"
+    },
+    {
+      "original_url": "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/fa9fe01eef93.png",
+      "caption": "",
+      "source": "Tressa Doors",
+      "original_width": "1024px",
+      "original_height": "1024px"
+    },
+    {
+      "original_url": "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/afd89cab1f00.jpg",
+      "caption": "",
+      "source": "Royale Touche",
+      "original_width": "1600px",
+      "original_height": "500px"
+    },
+    {
+      "original_url": "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/b50d020ff809.jpg",
+      "caption": "",
+      "source": "Interior Company",
+      "original_width": "1344px",
+      "original_height": "896px"
+    },
+    {
+      "original_url": "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/8673420f5a31.jpg",
+      "caption": "",
+      "source": "Rustic Luxe Designs",
+      "original_width": "1320px",
+      "original_height": "2309px"
+    }
+  ]
+}

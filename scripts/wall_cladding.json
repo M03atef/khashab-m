@@ -1,0 +1,54 @@
+🚀 Initializing Z-AI SDK...
+🔎 Searching images: "wooden wall cladding paneling accent wall modern interior pinterest"
+✅ Got 6 images
+{
+  "success": true,
+  "query": "wooden wall cladding paneling accent wall modern interior pinterest",
+  "count": 6,
+  "ranked": false,
+  "captioned_count": 0,
+  "results": [
+    {
+      "original_url": "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/ebe081e6632a.jpg",
+      "caption": "",
+      "source": "Pinterest",
+      "original_width": "675px",
+      "original_height": "1200px"
+    },
+    {
+      "original_url": "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/c2a54202ea7a.jpg",
+      "caption": "",
+      "source": "Ideal Home",
+      "original_width": "3200px",
+      "original_height": "1800px"
+    },
+    {
+      "original_url": "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/242e4f43d6bb.png",
+      "caption": "",
+      "source": "WoodyWalls",
+      "original_width": "1024px",
+      "original_height": "768px"
+    },
+    {
+      "original_url": "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/465c364e166b.webp",
+      "caption": "",
+      "source": "CraftivaArt",
+      "original_width": "2800px",
+      "original_height": "2800px"
+    },
+    {
+      "original_url": "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/5340154b8ebe.png",
+      "caption": "",
+      "source": "USA Builders' Depot",
+      "original_width": "1200px",
+      "original_height": "800px"
+    },
+    {
+      "original_url": "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/5aea594f9ecc.jpg",
+      "caption": "",
+      "source": "This Old House",
+      "original_width": "1920px",
+      "original_height": "1253px"
+    }
+  ]
+}

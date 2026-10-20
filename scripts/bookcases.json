@@ -1,0 +1,54 @@
+🚀 Initializing Z-AI SDK...
+🔎 Searching images: "modern wooden bookcase bookshelf luxury interior design pinterest"
+✅ Got 6 images
+{
+  "success": true,
+  "query": "modern wooden bookcase bookshelf luxury interior design pinterest",
+  "count": 6,
+  "ranked": false,
+  "captioned_count": 0,
+  "results": [
+    {
+      "original_url": "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/dad69330479b.jpg",
+      "caption": "",
+      "source": "cz.pinterest.com",
+      "original_width": "736px",
+      "original_height": "1104px"
+    },
+    {
+      "original_url": "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/7652e0656440.png",
+      "caption": "",
+      "source": "www.pinterest.com",
+      "original_width": "1023px",
+      "original_height": "1537px"
+    },
+    {
+      "original_url": "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/494fca9edaaa.png",
+      "caption": "",
+      "source": "www.pinterest.com",
+      "original_width": "941px",
+      "original_height": "1672px"
+    },
+    {
+      "original_url": "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/a492d380c0fd.jpg",
+      "caption": "",
+      "source": "www.homesandgardens.com",
+      "original_width": "1600px",
+      "original_height": "900px"
+    },
+    {
+      "original_url": "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/340913661f48.jpg",
+      "caption": "",
+      "source": "www.magicbricks.com",
+      "original_width": "1200px",
+      "original_height": "675px"
+    },
+    {
+      "original_url": "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/1adf1d29c9b9.jpg",
+      "caption": "",
+      "source": "etwoodcrafts.com",
+      "original_width": "1024px",
+      "original_height": "1024px"
+    }
+  ]
+}

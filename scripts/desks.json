@@ -1,0 +1,54 @@
+🚀 Initializing Z-AI SDK...
+🔎 Searching images: "modern wooden office desk home workspace luxury pinterest"
+✅ Got 6 images
+{
+  "success": true,
+  "query": "modern wooden office desk home workspace luxury pinterest",
+  "count": 6,
+  "ranked": false,
+  "captioned_count": 0,
+  "results": [
+    {
+      "original_url": "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/ae87f8b9e6d7.jpg",
+      "caption": "",
+      "source": "Pinterest",
+      "original_width": "1000px",
+      "original_height": "1500px"
+    },
+    {
+      "original_url": "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/e60309ddbf33.jpg",
+      "caption": "",
+      "source": "Pinterest",
+      "original_width": "1170px",
+      "original_height": "1536px"
+    },
+    {
+      "original_url": "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/0daa662df0fc.jpg",
+      "caption": "",
+      "source": "Tribesigns",
+      "original_width": "1800px",
+      "original_height": "1800px"
+    },
+    {
+      "original_url": "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/722cf0663b4d.jpg",
+      "caption": "",
+      "source": "Ideal Home",
+      "original_width": "1800px",
+      "original_height": "1800px"
+    },
+    {
+      "original_url": "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/e82b9c70ebf4.webp",
+      "caption": "",
+      "source": "Asian Paints Beautiful Homes",
+      "original_width": "1280px",
+      "original_height": "960px"
+    },
+    {
+      "original_url": "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/7809379db845.jpg",
+      "caption": "",
+      "source": "Costco Wholesale",
+      "original_width": "2000px",
+      "original_height": "2000px"
+    }
+  ]
+}

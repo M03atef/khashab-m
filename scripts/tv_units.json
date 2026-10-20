@@ -1,0 +1,54 @@
+🚀 Initializing Z-AI SDK...
+🔎 Searching images: "modern wooden TV unit media console living room luxury pinterest"
+✅ Got 6 images
+{
+  "success": true,
+  "query": "modern wooden TV unit media console living room luxury pinterest",
+  "count": 6,
+  "ranked": false,
+  "captioned_count": 0,
+  "results": [
+    {
+      "original_url": "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/2b3b9f6a50ea.jpg",
+      "caption": "",
+      "source": "Spryinterior",
+      "original_width": "986px",
+      "original_height": "986px"
+    },
+    {
+      "original_url": "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/fdeb667fc03b.jpg",
+      "caption": "",
+      "source": "Spryinterior",
+      "original_width": "1024px",
+      "original_height": "1024px"
+    },
+    {
+      "original_url": "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/ca44bc66a1b9.jpg",
+      "caption": "",
+      "source": "Guangdong Baishan Furniture Co., Ltd.",
+      "original_width": "1000px",
+      "original_height": "1000px"
+    },
+    {
+      "original_url": "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/52b7c808ed52.jpg",
+      "caption": "",
+      "source": "Dreamstime",
+      "original_width": "1600px",
+      "original_height": "1690px"
+    },
+    {
+      "original_url": "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/e6ccc6505693.png",
+      "caption": "",
+      "source": "Olivia's",
+      "original_width": "2700px",
+      "original_height": "1650px"
+    },
+    {
+      "original_url": "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/29530b79e017.webp",
+      "caption": "",
+      "source": "CharmyDecor",
+      "original_width": "1376px",
+      "original_height": "768px"
+    }
+  ]
+}

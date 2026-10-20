@@ -1,0 +1,54 @@
+🚀 Initializing Z-AI SDK...
+🔎 Searching images: "modern wooden console table entryway luxury interior pinterest"
+✅ Got 6 images
+{
+  "success": true,
+  "query": "modern wooden console table entryway luxury interior pinterest",
+  "count": 6,
+  "ranked": false,
+  "captioned_count": 0,
+  "results": [
+    {
+      "original_url": "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/96f591e26c3c.jpg",
+      "caption": "",
+      "source": "The Shelfist.",
+      "original_width": "1200px",
+      "original_height": "1800px"
+    },
+    {
+      "original_url": "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/7c2fbbbe225e.png",
+      "caption": "",
+      "source": "IKIRU",
+      "original_width": "1814px",
+      "original_height": "1814px"
+    },
+    {
+      "original_url": "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/42e0aa59e943.png",
+      "caption": "",
+      "source": "Ashdeco",
+      "original_width": "1024px",
+      "original_height": "1024px"
+    },
+    {
+      "original_url": "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/c0e23e542ba0.jpg",
+      "caption": "",
+      "source": "Kevin Francis Design",
+      "original_width": "800px",
+      "original_height": "1000px"
+    },
+    {
+      "original_url": "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/5e9e857a75dc.jpg",
+      "caption": "",
+      "source": "ELLE Decor",
+      "original_width": "4453px",
+      "original_height": "6657px"
+    },
+    {
+      "original_url": "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/3979fdaa8541.jpg",
+      "caption": "",
+      "source": "Fancy House Design",
+      "original_width": "1024px",
+      "original_height": "1024px"
+    }
+  ]
+}

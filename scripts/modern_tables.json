@@ -1,0 +1,54 @@
+🚀 Initializing Z-AI SDK...
+🔎 Searching images: "modern wooden dining table center table luxury interior pinterest"
+✅ Got 6 images
+{
+  "success": true,
+  "query": "modern wooden dining table center table luxury interior pinterest",
+  "count": 6,
+  "ranked": false,
+  "captioned_count": 0,
+  "results": [
+    {
+      "original_url": "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/6143565d0289.jpeg",
+      "caption": "",
+      "source": "BRABBU",
+      "original_width": "2048px",
+      "original_height": "2560px"
+    },
+    {
+      "original_url": "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/a7b6ae13c1d8.png",
+      "caption": "",
+      "source": "ET Woodcrafts",
+      "original_width": "1024px",
+      "original_height": "1024px"
+    },
+    {
+      "original_url": "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/2423fd9fe956.png",
+      "caption": "",
+      "source": "Pinterest",
+      "original_width": "1024px",
+      "original_height": "1536px"
+    },
+    {
+      "original_url": "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/e59e33a5a0b7.jpg",
+      "caption": "",
+      "source": "ELLE Decor",
+      "original_width": "1000px",
+      "original_height": "1000px"
+    },
+    {
+      "original_url": "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/eff99d97f7a7.jpg",
+      "caption": "",
+      "source": "Interior Company",
+      "original_width": "1024px",
+      "original_height": "1024px"
+    },
+    {
+      "original_url": "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/8b6cc66cbba3.jpg",
+      "caption": "",
+      "source": "House Beautiful",
+      "original_width": "980px",
+      "original_height": "1227px"
+    }
+  ]
+}

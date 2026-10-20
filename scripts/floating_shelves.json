@@ -1,0 +1,54 @@
+🚀 Initializing Z-AI SDK...
+🔎 Searching images: "wooden floating shelves wall mounted modern interior pinterest"
+✅ Got 6 images
+{
+  "success": true,
+  "query": "wooden floating shelves wall mounted modern interior pinterest",
+  "count": 6,
+  "ranked": false,
+  "captioned_count": 0,
+  "results": [
+    {
+      "original_url": "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/339b562b31f7.png",
+      "caption": "",
+      "source": "Shelf Love Collective",
+      "original_width": "736px",
+      "original_height": "1082px"
+    },
+    {
+      "original_url": "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/2a3b484109bb.jpg",
+      "caption": "",
+      "source": "ET Woodcrafts",
+      "original_width": "1046px",
+      "original_height": "1046px"
+    },
+    {
+      "original_url": "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/1b654f6bd7b3.jpg",
+      "caption": "",
+      "source": "Urbandi",
+      "original_width": "2801px",
+      "original_height": "2801px"
+    },
+    {
+      "original_url": "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/a50b63514775.png",
+      "caption": "",
+      "source": "Shelf Love Collective",
+      "original_width": "736px",
+      "original_height": "1104px"
+    },
+    {
+      "original_url": "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/90518e2cbc42.png",
+      "caption": "",
+      "source": "Ashdeco",
+      "original_width": "1024px",
+      "original_height": "1024px"
+    },
+    {
+      "original_url": "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/5a5f269989e0.jpg",
+      "caption": "",
+      "source": "allforwood",
+      "original_width": "1920px",
+      "original_height": "1920px"
+    }
+  ]
+}

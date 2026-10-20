@@ -1,0 +1,110 @@
+{
+  "bookcases": {
+    "en_label": "Bookcases & Bookshelves",
+    "ar_label": "مكتبات",
+    "images": [
+      "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/dad69330479b.jpg",
+      "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/7652e0656440.png",
+      "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/494fca9edaaa.png",
+      "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/a492d380c0fd.jpg",
+      "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/340913661f48.jpg",
+      "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/1adf1d29c9b9.jpg"
+    ]
+  },
+  "consoles": {
+    "en_label": "Consoles",
+    "ar_label": "كونسولات",
+    "images": [
+      "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/96f591e26c3c.jpg",
+      "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/7c2fbbbe225e.png",
+      "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/42e0aa59e943.png",
+      "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/c0e23e542ba0.jpg",
+      "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/5e9e857a75dc.jpg",
+      "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/3979fdaa8541.jpg"
+    ]
+  },
+  "desks": {
+    "en_label": "Desks",
+    "ar_label": "مكاتب",
+    "images": [
+      "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/ae87f8b9e6d7.jpg",
+      "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/e60309ddbf33.jpg",
+      "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/0daa662df0fc.jpg",
+      "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/722cf0663b4d.jpg",
+      "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/e82b9c70ebf4.webp",
+      "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/7809379db845.jpg"
+    ]
+  },
+  "doors": {
+    "en_label": "Doors",
+    "ar_label": "أبواب",
+    "images": [
+      "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/6121f8af3293.jpg",
+      "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/2cf75720cf1a.jpg",
+      "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/fa9fe01eef93.png",
+      "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/afd89cab1f00.jpg",
+      "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/b50d020ff809.jpg",
+      "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/8673420f5a31.jpg"
+    ]
+  },
+  "floating_shelves": {
+    "en_label": "Floating Shelves",
+    "ar_label": "رفوف معلقة",
+    "images": [
+      "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/339b562b31f7.png",
+      "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/2a3b484109bb.jpg",
+      "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/1b654f6bd7b3.jpg",
+      "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/a50b63514775.png",
+      "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/90518e2cbc42.png",
+      "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/5a5f269989e0.jpg"
+    ]
+  },
+  "modern_tables": {
+    "en_label": "Modern Tables",
+    "ar_label": "ترابيزات مودرن",
+    "images": [
+      "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/6143565d0289.jpeg",
+      "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/a7b6ae13c1d8.png",
+      "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/2423fd9fe956.png",
+      "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/e59e33a5a0b7.jpg",
+      "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/eff99d97f7a7.jpg",
+      "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/8b6cc66cbba3.jpg"
+    ]
+  },
+  "partitions": {
+    "en_label": "Partitions",
+    "ar_label": "فواصل / بارتشنز",
+    "images": [
+      "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/d74f29837018.jpg",
+      "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/5fb4255844eb.jpg",
+      "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/bebc2e1ce491.jpg",
+      "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/5e14bef7b55b.jpg",
+      "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/773bafee8e10.jpg",
+      "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/d23a2400788a.jpg"
+    ]
+  },
+  "tv_units": {
+    "en_label": "TV Units",
+    "ar_label": "وحدات تلفزيون",
+    "images": [
+      "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/2b3b9f6a50ea.jpg",
+      "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/fdeb667fc03b.jpg",
+      "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/ca44bc66a1b9.jpg",
+      "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/52b7c808ed52.jpg",
+      "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/e6ccc6505693.png",
+      "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/29530b79e017.webp"
+    ]
+  },
+  "wall_cladding": {
+    "en_label": "Wall Cladding",
+    "ar_label": "تكسية جدران",
+    "images": [
+      "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/ebe081e6632a.jpg",
+      "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/c2a54202ea7a.jpg",
+      "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/242e4f43d6bb.png",
+      "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/465c364e166b.webp",
+      "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/5340154b8ebe.png",
+      "https://z-cdn.chatglm.cn/image-search-mcp/images-ppt/5aea594f9ecc.jpg"
+    ]
+  }
+}
