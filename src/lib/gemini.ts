@@ -615,7 +615,7 @@ export async function testGeminiConnection(): Promise<{ ok: boolean; error?: str
     const ai = new GoogleGenAI({ apiKey });
     
     const response = await ai.models.generateContent({
-      model: "gemini-2.0-flash",
+      model: "gemini-3.8-flash",
       contents: "Say hello in Arabic",
     });
     
