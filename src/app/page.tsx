@@ -507,7 +507,7 @@ export default function Home() {
                     عرض الكل
                   </Button>
                   <a href={whatsappLink} target="_blank" rel="noopener noreferrer">
-                    <Button className="gap-2 bg-[#25D366] text-white hover:bg-[#1ebe57]">
+                    <Button className="gap-2 bg-accent text-white hover:bg-accent/90">
                       <WhatsAppIcon className="w-4 h-4" />
                       واتساب
                     </Button>
@@ -718,12 +718,12 @@ export default function Home() {
         </div>
       </footer>
 
-      {/* Floating WhatsApp — brand green glyph, direct wa.me */}
+      {/* Floating WhatsApp — brand accent (warm gold), white glyph, direct wa.me */}
       <a
         href={whatsappLink}
         target="_blank"
         rel="noopener noreferrer"
-        className="fixed bottom-4 left-4 z-50 w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-[#25D366] text-white shadow-xl flex items-center justify-center hover:scale-110 hover:bg-[#1ebe57] transition-transform focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#25D366] focus-visible:ring-offset-2"
+        className="fixed bottom-4 left-4 z-50 w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-accent text-white shadow-xl flex items-center justify-center hover:scale-110 hover:bg-accent/90 transition-transform focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
         aria-label="تواصل واتساب"
         title="تواصل واتساب"
       >
