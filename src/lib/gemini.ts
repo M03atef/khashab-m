@@ -519,21 +519,17 @@ async function buildGeminiSuggestion(
     const mimeType = input.mimeType || "image/jpeg";
     const data = input.imageBase64.replace(/^data:[^;]+;base64,/, "");
     parts.push({
-      inlineData: {
-        data,
-        mimeType,
-      },
+      inlineData: { data, mimeType },
     });
     parts.push({
-      text: "حلّل صورة المساحة (الإضاءة، الألوان، العرض المتاح، الستايل) واقترح قطعة خشبية من قسم العميل تناسبها فعلاً. اذكر في الوصف ليه القطعة هتناسب المشهد ده.",
+      text: "حلّل صورة المساحة واقترح قطعة خشبية تناسبها.",
     });
   }
 
-  const allErrors: string[] = [];
-  let lastError: unknown;
+  // Try each model
   for (const model of GEMINI_MODELS) {
     try {
-      console.info(`[gemini] trying model=${model}...`);
+      console.info("[gemini] trying model:", model);
       const response = await ai.models.generateContent({
         model,
         contents: [{ role: "user", parts }],
@@ -550,7 +546,18 @@ async function buildGeminiSuggestion(
               ?.map((p) => ("text" in p ? p.text : ""))
               .join("\n") ?? "";
 
+      console.info("[gemini] response text length:", text.length);
+      console.info("[gemini] response preview:", text.slice(0, 200));
+
+      if (!text || text.length === 0) {
+        throw new Error(`Empty response from ${model}`);
+      }
+
       const parsed = extractJsonObject(text);
+      if (!parsed) {
+        throw new Error(`Failed to parse JSON from ${model}: ${text.slice(0, 100)}`);
+      }
+
       const styleNotes = Array.isArray(parsed?.styleNotes)
         ? (parsed!.styleNotes as unknown[])
             .filter((n): n is string => typeof n === "string")
@@ -568,10 +575,10 @@ async function buildGeminiSuggestion(
           : "";
 
       if (!title && !description) {
-        throw new Error(`empty JSON from ${model}`);
+        throw new Error(`Empty title/description from ${model}`);
       }
 
-      console.info(`[gemini] live ok model=${model} aiConfigured=true`);
+      console.info("[gemini] SUCCESS with model:", model);
 
       return {
         title: title || fallback.title,
@@ -586,15 +593,14 @@ async function buildGeminiSuggestion(
         mock: false,
       };
     } catch (error) {
-      lastError = error;
-      console.error(`[gemini] model=${model} failed:`, error);
+      const errMsg = error instanceof Error ? error.message : String(error);
+      console.error("[gemini] model", model, "failed:", errMsg);
+      // Continue to next model
     }
   }
 
-  const errMsg = allErrors.join(" | ");
-  console.error("[gemini] all models failed; falling back to mock:", errMsg);
-  throw new Error(`All Gemini models failed: ${errMsg}`);
-  return buildMockSuggestion(input);
+  // All models failed
+  throw new Error("All Gemini models failed");
 }
 
 export async function createSuggestion(
