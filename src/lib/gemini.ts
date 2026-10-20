@@ -602,3 +602,26 @@ export async function createSuggestion(
   }
   return buildGeminiSuggestion(input);
 }
+
+// Simple test function
+export async function testGeminiConnection(): Promise<{ ok: boolean; error?: string; response?: string }> {
+  const apiKey = process.env.GEMINI_API_KEY?.trim();
+  if (!apiKey) {
+    return { ok: false, error: "No API key" };
+  }
+  
+  try {
+    const { GoogleGenAI } = await import("@google/genai");
+    const ai = new GoogleGenAI({ apiKey });
+    
+    const response = await ai.models.generateContent({
+      model: "gemini-2.0-flash",
+      contents: "Say hello in Arabic",
+    });
+    
+    const text = typeof response.text === "string" ? response.text : "no text";
+    return { ok: true, response: text.slice(0, 200) };
+  } catch (error) {
+    return { ok: false, error: error instanceof Error ? error.message : String(error) };
+  }
+}
