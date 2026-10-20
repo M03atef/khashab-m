@@ -526,6 +526,7 @@ async function buildGeminiSuggestion(
     });
   }
 
+  const errors: string[] = [];
   // Try each model
   for (const model of GEMINI_MODELS) {
     try {
@@ -594,13 +595,12 @@ async function buildGeminiSuggestion(
       };
     } catch (error) {
       const errMsg = error instanceof Error ? error.message : String(error);
+      errors.push(`${model}: ${errMsg.slice(0, 200)}`);
       console.error("[gemini] model", model, "failed:", errMsg);
-      // Continue to next model
     }
   }
 
-  // All models failed
-  throw new Error("All Gemini models failed");
+  throw new Error(`All models failed: ${errors.join(" | ")}`);
 }
 
 export async function createSuggestion(
