@@ -7,6 +7,7 @@ import {
 import { CATEGORIES } from "@/lib/catalog";
 
 export const runtime = "nodejs";
+export const maxDuration = 60; // Vercel Hobby plan max
 
 type Body = {
   categoryId?: string;
@@ -46,9 +47,10 @@ export async function POST(request: Request) {
       geminiConfigured: aiConfigured,
     });
   } catch (error) {
-    console.error("[api/suggest]", error);
+    const errMsg = error instanceof Error ? error.message : String(error);
+    console.error("[api/suggest] error:", errMsg);
     return NextResponse.json(
-      { error: "تعذر إنشاء الاقتراح الآن. جرّب تاني بعد شوية." },
+      { error: "تعذر إنشاء الاقتراح الآن. جرّب تاني بعد شوية.", detail: errMsg },
       { status: 500 }
     );
   }
