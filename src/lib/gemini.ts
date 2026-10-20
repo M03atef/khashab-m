@@ -527,10 +527,16 @@ async function buildGeminiSuggestion(
   }
 
   const errors: string[] = [];
-  // Try each model
+  // Try each model with retry for 503
   for (const model of GEMINI_MODELS) {
+    for (let attempt = 0; attempt < 2; attempt++) {
     try {
-      console.info("[gemini] trying model:", model);
+      if (attempt > 0) {
+        console.info("[gemini] retrying model:", model, "attempt:", attempt + 1);
+        await new Promise((r) => setTimeout(r, 2000));
+      } else {
+        console.info("[gemini] trying model:", model);
+      }
       const response = await ai.models.generateContent({
         model,
         contents: [{ role: "user", parts }],
@@ -595,9 +601,15 @@ async function buildGeminiSuggestion(
       };
     } catch (error) {
       const errMsg = error instanceof Error ? error.message : String(error);
+      if (attempt === 0 && errMsg.includes("503")) {
+        console.info("[gemini] 503 on", model, "- will retry");
+        continue;
+      }
       errors.push(`${model}: ${errMsg.slice(0, 200)}`);
       console.error("[gemini] model", model, "failed:", errMsg);
+      break;
     }
+    } // end retry loop
   }
 
   throw new Error(`All models failed: ${errors.join(" | ")}`);
