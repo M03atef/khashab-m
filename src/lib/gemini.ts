@@ -589,7 +589,9 @@ async function buildGeminiSuggestion(
     }
   }
 
-  console.error("[gemini] all models failed; falling back to mock:", lastError instanceof Error ? lastError.message : String(lastError));
+  const errMsg = lastError instanceof Error ? lastError.message : String(lastError);
+  console.error("[gemini] all models failed; falling back to mock:", errMsg);
+  throw new Error(`All Gemini models failed: ${errMsg}`);
   return buildMockSuggestion(input);
 }
 
@@ -598,9 +600,20 @@ export async function createSuggestion(
 ): Promise<SuggestResult> {
   if (!isAiConfigured()) {
     console.info("[gemini] aiConfigured=false mode=mock");
-    return buildMockSuggestion(input);
+    const mock = buildMockSuggestion(input);
+    (mock as SuggestResult & { _debug: string })._debug = "GEMINI_API_KEY not set";
+    return mock;
   }
-  return buildGeminiSuggestion(input);
+  try {
+    const result = await buildGeminiSuggestion(input);
+    return result;
+  } catch (error) {
+    const errMsg = error instanceof Error ? error.message : String(error);
+    console.error("[gemini] createSuggestion error:", errMsg);
+    const mock = buildMockSuggestion(input);
+    (mock as SuggestResult & { _debug: string })._debug = errMsg;
+    return mock;
+  }
 }
 
 // Simple test function

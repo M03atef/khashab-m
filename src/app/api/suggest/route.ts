@@ -1,3 +1,4 @@
+import type { SuggestResult } from "@/lib/gemini";
 import { NextResponse } from "next/server";
 import {
   createSuggestion,
@@ -39,12 +40,14 @@ export async function POST(request: Request) {
 
     const suggestion = await createSuggestion(input);
     const aiConfigured = isAiConfigured();
+    const debug = (suggestion as SuggestResult & { _debug?: string })._debug;
     return NextResponse.json({
       suggestion,
       aiConfigured,
       mode: suggestion.mock ? "mock" : "live",
       // legacy alias for older clients
       geminiConfigured: aiConfigured,
+      ...(debug ? { debug } : {}),
     });
   } catch (error) {
     const errMsg = error instanceof Error ? error.message : String(error);
