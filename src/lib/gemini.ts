@@ -529,9 +529,11 @@ async function buildGeminiSuggestion(
     });
   }
 
+  const allErrors: string[] = [];
   let lastError: unknown;
   for (const model of GEMINI_MODELS) {
     try {
+      console.info(`[gemini] trying model=${model}...`);
       const response = await ai.models.generateContent({
         model,
         contents: [{ role: "user", parts }],
@@ -589,7 +591,7 @@ async function buildGeminiSuggestion(
     }
   }
 
-  const errMsg = lastError instanceof Error ? lastError.message : String(lastError);
+  const errMsg = allErrors.join(" | ");
   console.error("[gemini] all models failed; falling back to mock:", errMsg);
   throw new Error(`All Gemini models failed: ${errMsg}`);
   return buildMockSuggestion(input);
