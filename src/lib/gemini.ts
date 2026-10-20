@@ -589,7 +589,7 @@ async function buildGeminiSuggestion(
     }
   }
 
-  console.error("[gemini] all models failed; falling back to mock:", lastError);
+  console.error("[gemini] all models failed; falling back to mock:", lastError instanceof Error ? lastError.message : String(lastError));
   return buildMockSuggestion(input);
 }
 
