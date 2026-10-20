@@ -469,8 +469,8 @@ ${FEW_SHOT}`;
 
 /** Prefer newer flash models; fall through if one is unavailable for the key. */
 const GEMINI_MODELS = [
-  "gemini-2.0-flash",
   "gemini-2.5-flash",
+  "gemini-2.0-flash",
   "gemini-1.5-flash",
 ] as const;
 
