@@ -346,29 +346,6 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-            <FeatureCard
-              icon={<TreePine className="w-7 h-7" />}
-              title="خامات أصلية"
-              desc="نختار أجود أنواع الخشب الطبيعي: زان، جوز، بلط، رماد."
-            />
-            <FeatureCard
-              icon={<Hammer className="w-7 h-7" />}
-              title="صناعة يدوية"
-              desc="كل قطعة تمر بمراحل دقيقة من النجارة المصرية الأصيلة."
-            />
-            <FeatureCard
-              icon={<Sparkles className="w-7 h-7" />}
-              title="تصميم مودرن"
-              desc="نمزج بين الفخامة الكلاسيكية واللمسات العصرية."
-            />
-            <FeatureCard
-              icon={<CheckCircle2 className="w-7 h-7" />}
-              title="ضمان الجودة"
-              desc="نتفاخر بمتانة منتجاتنا ونضمن رضاك التام."
-            />
-          </div>
-
         </div>
       </section>
 {/* ===== Categories ===== */}
@@ -476,6 +453,34 @@ export default function Home() {
                 />
               ))
             )}
+          </div>
+        </div>
+      </section>
+
+      {/* ===== Features ===== */}
+      <section className="py-10 sm:py-16 lg:py-20 border-b border-border/60">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+            <FeatureCard
+              icon={<TreePine className="w-7 h-7" />}
+              title="خامات أصلية"
+              desc="نختار أجود أنواع الخشب الطبيعي: زان، جوز، بلط، رماد."
+            />
+            <FeatureCard
+              icon={<Hammer className="w-7 h-7" />}
+              title="صناعة يدوية"
+              desc="كل قطعة تمر بمراحل دقيقة من النجارة المصرية الأصيلة."
+            />
+            <FeatureCard
+              icon={<Sparkles className="w-7 h-7" />}
+              title="تصميم مودرن"
+              desc="نمزج بين الفخامة الكلاسيكية واللمسات العصرية."
+            />
+            <FeatureCard
+              icon={<CheckCircle2 className="w-7 h-7" />}
+              title="ضمان الجودة"
+              desc="نتفاخر بمتانة منتجاتنا ونضمن رضاك التام."
+            />
           </div>
         </div>
       </section>
