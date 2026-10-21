@@ -369,11 +369,6 @@ export default function Home() {
             />
           </div>
 
-          {/* Brand lifestyle stills */}
-          <div className="mt-12 grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
-            {[
-
-          </div>
         </div>
       </section>
 {/* ===== Categories ===== */}
