@@ -922,7 +922,7 @@ function CategoryGallery({
       </p>
       {/* على الموبايل: عمودين، على الديسكتوب: 3 أعمدة مع الصورة الأولى كبيرة */}
       <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-4">
-        {category.images.map((img, i) => (
+        {category.images.slice(0, 6).map((img, i) => (
           <button
             key={i}
             onClick={() => onImageClick(img, `${category.name} - تصميم ${i + 1}`)}
