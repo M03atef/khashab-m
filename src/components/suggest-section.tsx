@@ -199,7 +199,7 @@ export function SuggestSection() {
           )}
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-8 lg:gap-10 items-start max-w-6xl mx-auto">
+        <div className="grid lg:grid-cols-2 gap-4 sm:gap-8 lg:gap-10 items-start max-w-6xl mx-auto">
           <div className="space-y-4 bg-card/70 backdrop-blur-sm border border-border/70 rounded-2xl p-4 sm:p-6">
             <label className="block space-y-2">
               <span className="text-sm font-semibold text-primary">القسم</span>

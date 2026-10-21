@@ -314,7 +314,7 @@ export default function Home() {
       </section>
 
       {/* ===== About ===== */}
-      <section id="about" className="py-16 sm:py-24 bg-card/40 border-b border-border/60">
+      <section id="about" className="py-10 sm:py-16 lg:py-20 bg-card/40 border-b border-border/60">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-10 lg:gap-14 items-center mb-12">
             <div className="relative aspect-[4/3] rounded-2xl overflow-hidden order-1 lg:order-2 shadow-lg ring-1 ring-border/60">
@@ -411,42 +411,8 @@ export default function Home() {
           </div>
         </div>
       </section>
-
-      {/* ===== Steps ===== */}
-      <section className="py-14 sm:py-20 border-b border-border/60">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-2xl mx-auto mb-10">
-            <h2 className="text-3xl sm:text-4xl font-extrabold text-primary mb-3">
-              خطوات <span className="text-accent">التعامل</span>
-            </h2>
-            <p className="text-muted-foreground">
-              من أول رسالة لحد التسليم — مسار واضح وبسيط.
-            </p>
-          </div>
-          <ol className="grid sm:grid-cols-2 lg:grid-cols-5 gap-4 max-w-6xl mx-auto">
-            {[
-              "تواصل واتساب أو اتصال",
-              "ابعت مقاسات أو صورة المساحة",
-              "نتفق على التصميم والخامة",
-              "التصنيع في الورشة",
-              "التسليم والتركيب",
-            ].map((step, i) => (
-              <li
-                key={step}
-                className="relative rounded-xl border border-border/70 bg-card/50 p-4 text-center"
-              >
-                <span className="inline-flex w-8 h-8 items-center justify-center rounded-full bg-accent/20 text-accent font-bold text-sm mb-2">
-                  {i + 1}
-                </span>
-                <p className="text-sm font-semibold text-primary leading-snug">{step}</p>
-              </li>
-            ))}
-          </ol>
-        </div>
-      </section>
-
-      {/* ===== Categories ===== */}
-      <section id="categories" className="py-16 sm:py-24 border-b border-border/60">
+{/* ===== Categories ===== */}
+      <section id="categories" className="py-10 sm:py-16 lg:py-20 border-b border-border/60">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-2xl mx-auto mb-12">
             <div className="inline-flex items-center gap-2 rounded-full bg-accent/15 border border-accent/30 px-4 py-1.5 text-sm font-semibold text-accent-foreground mb-4">
@@ -479,7 +445,7 @@ export default function Home() {
       <SuggestSection />
 
       {/* ===== Gallery ===== */}
-      <section id="gallery" className="py-16 sm:py-24 bg-card/40 border-b border-border/60">
+      <section id="gallery" className="py-10 sm:py-16 lg:py-20 bg-card/40 border-b border-border/60">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-2xl mx-auto mb-8">
             <div className="inline-flex items-center gap-2 rounded-full bg-accent/15 border border-accent/30 px-4 py-1.5 text-sm font-semibold text-accent-foreground mb-4">
@@ -555,7 +521,7 @@ export default function Home() {
       </section>
 
       {/* ===== CTA ===== */}
-      <section className="py-16 sm:py-20 wood-pattern text-primary-foreground relative overflow-hidden">
+      <section className="py-10 sm:py-16 lg:py-20 wood-pattern text-primary-foreground relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/20 to-black/40" />
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative">
           <div className="max-w-3xl mx-auto text-center">
