@@ -317,16 +317,7 @@ export default function Home() {
       <section id="about" className="py-10 sm:py-16 lg:py-20 bg-card/40 border-b border-border/60">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-10 lg:gap-14 items-center mb-12">
-            <div className="relative aspect-[4/3] rounded-2xl overflow-hidden order-1 lg:order-2 shadow-lg ring-1 ring-border/60">
-              <Image
-                src="/assets/brand-living-room.jpg"
-                alt="خشبة — تصميمات معيشة خشبية"
-                fill
-                sizes="(max-width: 1024px) 100vw, 50vw"
-                className="object-cover"
-                unoptimized
-              />
-            </div>
+
             <div className="max-w-xl order-2 lg:order-1">
               <div className="inline-flex items-center gap-2 rounded-full bg-accent/15 border border-accent/30 px-4 py-1.5 text-sm font-semibold text-accent-foreground mb-4">
                 <TreePine className="w-4 h-4 text-accent" />
@@ -393,21 +384,7 @@ export default function Home() {
                 src: "/assets/bookshelf-nook.jpg",
                 alt: "مكتبة خشب بلوط مع إضاءة دافئة",
               },
-            ].map((shot) => (
-              <div
-                key={shot.src + shot.alt}
-                className="relative aspect-[4/3] overflow-hidden rounded-xl ring-1 ring-border/60"
-              >
-                <Image
-                  src={shot.src}
-                  alt={shot.alt}
-                  fill
-                  sizes="(max-width: 640px) 100vw, 33vw"
-                  className="object-cover"
-                  unoptimized
-                />
-              </div>
-            ))}
+
           </div>
         </div>
       </section>
