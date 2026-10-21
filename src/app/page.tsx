@@ -372,16 +372,7 @@ export default function Home() {
           {/* Brand lifestyle stills */}
           <div className="mt-12 grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
             {[
-              {
-                src: "/hero-bg.jpg",
-                alt: "كونسول خشبي ومرآة دائرية",
-              },
-              {
-                src: "/assets/brand-living-room.jpg",
-                alt: "وحدة تلفزيون وتكسية خشبية",
-              },
-              {
-                src: "/assets/bookshelf-nook.jpg",
+
           </div>
         </div>
       </section>
