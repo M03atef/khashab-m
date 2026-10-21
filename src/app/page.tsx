@@ -382,9 +382,6 @@ export default function Home() {
               },
               {
                 src: "/assets/bookshelf-nook.jpg",
-                alt: "مكتبة خشب بلوط مع إضاءة دافئة",
-              },
-
           </div>
         </div>
       </section>
