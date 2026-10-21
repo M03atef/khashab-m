@@ -931,13 +931,12 @@ function CategoryGallery({
               i === 0 && "sm:col-span-2 sm:row-span-2"
             )}
           >
-            <Image
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
               src={img}
               alt={`${category.name} - تصميم ${i + 1}`}
-              fill
-              sizes="(max-width: 640px) 50vw, 33vw"
-              className="object-cover"
-              unoptimized
+              className="w-full h-full object-cover"
+              loading="lazy"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-2 sm:p-3">
               <span className="text-[10px] sm:text-sm font-semibold text-white">
