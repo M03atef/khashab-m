@@ -21,14 +21,7 @@ type Body = {
 export async function POST(request: Request) {
   try {
     const body = (await request.json()) as Body;
-    const categoryId = body.categoryId?.trim() || CATEGORIES[0].id;
-    const valid = CATEGORIES.some((c) => c.id === categoryId);
-    if (!valid) {
-      return NextResponse.json(
-        { error: "قسم غير معروف" },
-        { status: 400 }
-      );
-    }
+    const categoryId = body.categoryId?.trim() || undefined;
 
     const input: SuggestRequest = {
       categoryId,

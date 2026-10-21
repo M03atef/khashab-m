@@ -22,6 +22,7 @@ type Suggestion = {
   description: string;
   styleNotes: string[];
   previewImage: string;
+  mockupImage?: string;
   categoryId: string;
   categoryName: string;
   mode: "max-creativity" | "guided";
@@ -61,7 +62,7 @@ async function compressImageFile(file: File): Promise<{
 
 export function SuggestSection() {
   const fileRef = useRef<HTMLInputElement>(null);
-  const [categoryId, setCategoryId] = useState(CATEGORIES[0].id);
+  const [categoryId, setCategoryId] = useState<string>("");
   const [caption, setCaption] = useState("");
   const [preview, setPreview] = useState<string | null>(null);
   const [mimeType, setMimeType] = useState<string | undefined>();
@@ -123,6 +124,7 @@ export function SuggestSection() {
         body: JSON.stringify({
           categoryId,
           caption,
+          categoryId: categoryId || undefined,
           imageBase64: preview ?? undefined,
           mimeType,
           variation,
@@ -327,15 +329,31 @@ export function SuggestSection() {
 
             {active && !loading && (
               <div className="space-y-4 flex-1 flex flex-col">
-                <div className="relative aspect-[4/3] rounded-xl overflow-hidden bg-secondary">
-                  <Image
-                    src={active.previewImage}
-                    alt={active.title}
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 1024px) 100vw, 50vw"
-                    unoptimized
-                  />
+                <div className={active.mockupImage ? "grid grid-cols-2 gap-3" : ""}>
+                  {active.mockupImage && (
+                    <div>
+                      <span className="text-xs font-bold bg-background/95 text-muted-foreground px-2 py-1 rounded-full mb-2 inline-block">قبل</span>
+                      <div className="relative aspect-[4/3] rounded-xl overflow-hidden bg-secondary">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img src={preview || ""} alt="المساحة الأصلية" className="w-full h-full object-cover" />
+                      </div>
+                    </div>
+                  )}
+                  <div>
+                    {active.mockupImage && (
+                      <span className="text-xs font-bold bg-accent text-accent-foreground px-2 py-1 rounded-full mb-2 inline-block">بعد ✨</span>
+                    )}
+                    <div className="relative aspect-[4/3] rounded-xl overflow-hidden bg-secondary">
+                      <Image
+                        src={active.mockupImage || active.previewImage}
+                        alt={active.title}
+                        fill
+                        className="object-cover"
+                        sizes="(max-width: 1024px) 100vw, 50vw"
+                        unoptimized
+                      />
+                    </div>
+                  </div>
                 </div>
                 <div className="space-y-2 flex-1">
                   <div className="flex items-center justify-between gap-2">

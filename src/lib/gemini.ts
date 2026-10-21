@@ -1,7 +1,7 @@
 import { CATEGORIES } from "@/lib/catalog";
 
 export type SuggestRequest = {
-  categoryId: string;
+  categoryId?: string;
   caption?: string;
   imageBase64?: string;
   mimeType?: string;
@@ -14,14 +14,17 @@ export type SuggestResult = {
   description: string;
   styleNotes: string[];
   previewImage: string;
+  /** AI-edited image (base64 data URL) - same as user's photo but with proposed piece added */
+  mockupImage?: string;
   categoryId: string;
   categoryName: string;
   mode: "max-creativity" | "guided";
   mock: boolean;
 };
 
-function pickCategory(categoryId: string) {
-  return CATEGORIES.find((c) => c.id === categoryId) ?? CATEGORIES[0];
+function pickCategory(categoryId?: string) {
+  if (!categoryId) return undefined;
+  return CATEGORIES.find((c) => c.id === categoryId);
 }
 
 /** Rich per-category mock packs — customer-ready Arabic sales + craft copy */
@@ -371,6 +374,10 @@ function buildMockSuggestion(input: SuggestRequest): SuggestResult {
   const caption = (input.caption || "").trim();
   const mode = caption ? "guided" : "max-creativity";
   const variation = Math.abs(input.variation ?? 0);
+  
+  // If no category selected, use MAX CREATIVITY mode
+  const categoryName = category?.name || "إبداع حر";
+  const categoryNameEn = category?.nameEn || "Free Creativity";
   const image =
     category.images[variation % category.images.length] ?? category.images[0];
 
@@ -490,13 +497,17 @@ async function buildGeminiSuggestion(
   const caption = (input.caption || "").trim();
   const mode = caption ? "guided" : "max-creativity";
   const variation = Math.abs(input.variation ?? 0);
+  
+  // If no category selected, use MAX CREATIVITY mode
+  const categoryName = category?.name || "إبداع حر";
+  const categoryNameEn = category?.nameEn || "Free Creativity";
 
   const { GoogleGenAI } = await import("@google/genai");
   const ai = new GoogleGenAI({ apiKey });
 
   const systemPrompt = buildSystemPrompt(
-    category.name,
-    category.nameEn,
+    categoryName,
+    categoryNameEn,
     mode,
     variation
   );
@@ -587,15 +598,74 @@ async function buildGeminiSuggestion(
 
       console.info("[gemini] SUCCESS with model:", model);
 
+      // Step 2: If user uploaded an image, edit it with the proposed piece
+      let mockupImage: string | undefined;
+      if (input.imageBase64) {
+        try {
+          console.info("[gemini] starting image edit...");
+          const imageData = input.imageBase64.replace(/^data:[^;]+;base64,/, "");
+          const imageMimeType = input.mimeType || "image/jpeg";
+
+          const editPrompt = `Take this photo of a room/space and add a wooden furniture piece to it.
+
+Based on the analysis, add this piece: ${title}
+Description: ${description}
+
+CRITICAL RULES:
+- Keep the EXACT same room - same walls, floor, lighting, camera angle
+- Add ONLY the proposed wooden piece in the best location
+- Do NOT change any existing furniture, colors, or lighting
+- Do NOT add plants, accessories, or any other items
+- The result should look like a real photo with the new piece added
+- Photorealistic, architectural digest quality
+
+The piece should be made of natural wood (oak/walnut) and placed in the most suitable empty spot.`;
+
+          const editResponse = await ai.models.generateContent({
+            model: "gemini-2.5-flash-image",
+            contents: [
+              {
+                role: "user",
+                parts: [
+                  {
+                    inlineData: {
+                      data: imageData,
+                      mimeType: imageMimeType,
+                    },
+                  },
+                  { text: editPrompt },
+                ],
+              },
+            ],
+          });
+
+          // Extract image from response
+          const editCandidates = (editResponse as { candidates?: Array<{ content?: { parts?: Array<{ inlineData?: { data?: string } }> } }> }).candidates;
+          if (editCandidates && editCandidates[0]?.content?.parts) {
+            for (const part of editCandidates[0].content.parts) {
+              if (part.inlineData?.data) {
+                mockupImage = `data:image/png;base64,${part.inlineData.data}`;
+                console.info("[gemini] image edit SUCCESS, size:", part.inlineData.data.length);
+                break;
+              }
+            }
+          }
+          if (!mockupImage) {
+            console.info("[gemini] image edit: no image in response");
+          }
+        } catch (editErr) {
+          console.error("[gemini] image edit failed:", editErr instanceof Error ? editErr.message : String(editErr));
+        }
+      }
+
       return {
         title: title || fallback.title,
         description: description || text.slice(0, 500) || fallback.description,
         styleNotes: styleNotes.length > 0 ? styleNotes : fallback.styleNotes,
-        previewImage:
-          category.images[variation % category.images.length] ??
-          category.images[0],
-        categoryId: category.id,
-        categoryName: category.name,
+        previewImage: mockupImage || (category.images[variation % category.images.length] ?? category.images[0]),
+        mockupImage,
+        categoryId: category?.id || "general",
+        categoryName: category?.name || "اقتراح عام",
         mode,
         mock: false,
       };
