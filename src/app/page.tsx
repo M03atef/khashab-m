@@ -3,6 +3,7 @@
 import { useState, useMemo } from "react";
 import Image from "next/image";
 import {
+  Camera,
   Phone,
   MapPin,
   Clock,
@@ -276,12 +277,36 @@ export default function Home() {
               </a>
               <Button
                 size="lg"
-                variant="ghost"
-                className="gap-2 text-sm sm:text-base h-11 sm:h-12 px-4 text-primary"
+                className="gap-2 text-sm sm:text-base h-11 sm:h-12 px-5 sm:px-6 bg-accent text-accent-foreground hover:bg-accent/90 shadow-lg shadow-accent/20"
                 onClick={() => scrollTo("suggest")}
               >
-                <Sparkles className="w-4 h-4 text-accent" />
-                اقترح لي قطعتك
+                <Sparkles className="w-4 h-4 sm:w-5 sm:h-5" />
+                جرّب مساعد الذكاء الاصطناعي
+                <ArrowLeft className="w-4 h-4 sm:w-5 sm:h-5" />
+              </Button>
+            </div>
+
+            {/* AI Hint Banner */}
+            <div className="mt-4 p-3 sm:p-4 rounded-xl bg-gradient-to-l from-accent/10 via-accent/5 to-transparent border border-accent/30 flex items-center gap-3">
+              <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-accent/20 text-accent flex items-center justify-center shrink-0">
+                <Camera className="w-5 h-5 sm:w-6 sm:h-6" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-sm sm:text-base font-bold text-primary leading-tight">
+                  📸 صوّر مساحتك الفاضية وخلّي الـ AI يقترحلك
+                </p>
+                <p className="text-xs sm:text-sm text-muted-foreground mt-0.5">
+                  ببعتلك صورة لشكل المكان بعد التعديل في ثواني
+                </p>
+              </div>
+              <Button
+                size="sm"
+                variant="ghost"
+                className="gap-1 text-accent hover:bg-accent/10 shrink-0"
+                onClick={() => scrollTo("suggest")}
+              >
+                جرّبها
+                <ArrowLeft className="w-3.5 h-3.5" />
               </Button>
             </div>
           </div>
