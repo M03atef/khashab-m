@@ -208,6 +208,71 @@ export function SuggestSection() {
         <div className="grid lg:grid-cols-2 gap-4 sm:gap-8 lg:gap-10 items-start max-w-6xl mx-auto">
           <div className="space-y-4 bg-card/70 backdrop-blur-sm border border-border/70 rounded-2xl p-4 sm:p-6">
 
+            {/* Style Selector */}
+            <div>
+              <span className="text-sm font-semibold text-primary block mb-2">الستايل</span>
+              <div className="flex flex-wrap gap-2">
+                {[
+                  { id: "modern", label: "مودرن" },
+                  { id: "classic", label: "كلاسيك" },
+                  { id: "scandinavian", label: "إسكندنافي" },
+                  { id: "industrial", label: "صناعي" },
+                  { id: "japandi", label: "ياباني" },
+                ].map((s) => (
+                  <button
+                    key={s.id}
+                    type="button"
+                    onClick={() => setStyle(s.id)}
+                    className={cn(
+                      "px-3 py-1.5 rounded-lg text-xs font-semibold border transition-all",
+                      style === s.id
+                        ? "bg-accent text-accent-foreground border-accent"
+                        : "bg-background text-foreground/70 border-border hover:border-accent/40"
+                    )}
+                  >
+                    {s.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Color Palette */}
+            <div>
+              <span className="text-sm font-semibold text-primary block mb-2">الألوان</span>
+              <div className="flex flex-wrap gap-2">
+                {[
+                  { id: "warm", label: "دافي", colors: ["#8b5a2b", "#d4af5f", "#f5e6d3"] },
+                  { id: "cool", label: "بارد", colors: ["#4a5568", "#a0aec0", "#e2e8f0"] },
+                  { id: "neutral", label: "محايد", colors: ["#718096", "#cbd5e0", "#f7fafc"] },
+                  { id: "wood", label: "خشب", colors: ["#5d3a1a", "#a0673a", "#d4af5f"] },
+                  { id: "contrast", label: "تباين", colors: ["#1a1a1a", "#8b5a2b", "#ffffff"] },
+                ].map((c) => (
+                  <button
+                    key={c.id}
+                    type="button"
+                    onClick={() => setColorPalette(c.id)}
+                    className={cn(
+                      "flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-semibold border transition-all",
+                      colorPalette === c.id
+                        ? "border-accent bg-accent/10"
+                        : "border-border hover:border-accent/40"
+                    )}
+                  >
+                    <span className="flex gap-0.5">
+                      {c.colors.map((color, i) => (
+                        <span
+                          key={i}
+                          className="w-3 h-3 rounded-full"
+                          style={{ backgroundColor: color }}
+                        />
+                      ))}
+                    </span>
+                    {c.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
             <label className="block space-y-2">
               <span className="text-sm font-semibold text-primary">
                 توجيهك (اختياري)
