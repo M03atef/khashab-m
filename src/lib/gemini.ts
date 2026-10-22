@@ -542,13 +542,13 @@ async function buildGeminiSuggestion(
 
   const errors: string[] = [];
   // Try each model with smart retry for 503/429
-  const MAX_RETRIES = 5;
-  for (const model of GEMINI_MODELS) {
+  const MAX_RETRIES = 2;
+  for (const model of GEMINI_MODELS.slice(0, 1)) { // Only try first model
     for (let attempt = 0; attempt < MAX_RETRIES; attempt++) {
     try {
       if (attempt > 0) {
-        const delay = 3000 * attempt; // 3s, 6s, 9s, 12s
-        console.info("[gemini] retrying model:", model, "attempt:", attempt + 1, "after", delay, "ms");
+        const delay = 2000; // Fixed 2s delay
+        console.info("[gemini] retrying model:", model, "attempt:", attempt + 1);
         await new Promise((r) => setTimeout(r, delay));
       } else {
         console.info("[gemini] trying model:", model);
