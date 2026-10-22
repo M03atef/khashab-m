@@ -63,6 +63,8 @@ async function compressImageFile(file: File): Promise<{
 export function SuggestSection() {
   const fileRef = useRef<HTMLInputElement>(null);
   const [categoryId, setCategoryId] = useState<string>("");
+  const [style, setStyle] = useState<string>("modern");
+  const [colorPalette, setColorPalette] = useState<string>("warm");
   const [caption, setCaption] = useState("");
   const [preview, setPreview] = useState<string | null>(null);
   const [mimeType, setMimeType] = useState<string | undefined>();
@@ -128,6 +130,8 @@ export function SuggestSection() {
           imageBase64: preview ?? undefined,
           mimeType,
           variation,
+          style,
+          colorPalette,
         }),
       });
       const data = await res.json();

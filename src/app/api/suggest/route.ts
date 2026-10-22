@@ -16,6 +16,8 @@ type Body = {
   imageBase64?: string;
   mimeType?: string;
   variation?: number;
+  style?: string;
+  colorPalette?: string;
 };
 
 export async function POST(request: Request) {

@@ -5,8 +5,11 @@ export type SuggestRequest = {
   caption?: string;
   imageBase64?: string;
   mimeType?: string;
-  /** Seed so "another suggestion" returns a different catalog pick */
   variation?: number;
+  /** Design style: modern, classic, scandinavian, industrial, japandi */
+  style?: string;
+  /** Color palette: warm, cool, neutral, wood, contrast */
+  colorPalette?: string;
 };
 
 export type SuggestResult = {
@@ -606,20 +609,55 @@ async function buildGeminiSuggestion(
           const imageData = input.imageBase64.replace(/^data:[^;]+;base64,/, "");
           const imageMimeType = input.mimeType || "image/jpeg";
 
-          const editPrompt = `Take this photo of a room/space and add a wooden furniture piece to it.
+          const styleDesc = input.style || "modern minimalist";
+          const colorDesc = input.colorPalette || "warm wood tones";
 
-Based on the analysis, add this piece: ${title}
-Description: ${description}
+          const editPrompt = `You are an expert interior designer AI. Transform this room photo by adding wooden furniture in the empty spaces.
 
-CRITICAL RULES:
-- Keep the EXACT same room - same walls, floor, lighting, camera angle
-- Add ONLY the proposed wooden piece in the best location
-- Do NOT change any existing furniture, colors, or lighting
-- Do NOT add plants, accessories, or any other items
-- The result should look like a real photo with the new piece added
-- Photorealistic, architectural digest quality
+DESIGN BRIEF:
+- Piece to add: ${title}
+- Style: ${styleDesc}
+- Color palette: ${colorDesc}
+- Description: ${description}
 
-The piece should be made of natural wood (oak/walnut) and placed in the most suitable empty spot.`;
+CRITICAL PRESERVATION RULES (like ControlNet):
+- PRESERVE the EXACT room structure: walls, floor, ceiling, windows, doors
+- PRESERVE the EXACT camera angle and perspective
+- PRESERVE all existing furniture - do NOT modify or remove any
+- PRESERVE the natural lighting and shadows
+- PRESERVE wall colors and floor texture
+
+WHAT TO ADD:
+- Add ONLY the proposed wooden furniture piece (${title})
+- Place it in the most suitable empty spot in the room
+- Match the style: ${styleDesc}
+- Match the colors: ${colorDesc}
+- The piece should be made of natural wood (oak, walnut, or as described)
+- Add realistic shadows and reflections for the new piece
+- The new piece must blend seamlessly with the existing room
+
+STYLE GUIDELINES:
+- Modern: clean lines, minimal, sleek
+- Classic: ornate details, warm tones, traditional
+- Scandinavian: light wood, white walls, cozy
+- Industrial: dark metal + wood, raw textures
+- Japandi: zen, natural, simple elegance
+
+COLOR PALETTE GUIDELINES:
+- Warm: browns, beiges, cream, gold accents
+- Cool: grays, blues, whites, silver
+- Neutral: monochrome, soft tones
+- Wood: natural wood tones throughout
+- Contrast: dark + light combination
+
+OUTPUT QUALITY:
+- Photorealistic result (NOT illustration, NOT 3D render)
+- Architectural digest magazine quality
+- 4K detail level
+- The result should look like a real photo taken after renovation
+
+Do NOT add: plants, accessories, wall art, rugs, or any items other than the main piece.
+Do NOT change: wall color, floor type, ceiling, window position, existing furniture.`;
 
           const editResponse = await ai.models.generateContent({
             model: "gemini-2.5-flash-image",
