@@ -185,7 +185,7 @@ export function SuggestSection() {
             خلّي الـ <span className="text-accent">AI</span> يفكر معاك
           </h2>
           <p className="text-base sm:text-lg text-muted-foreground leading-relaxed">
-            ارفع صورة للمساحة (اختياري)، اختار القسم، واكتب توجيه أو سيبه فاضي
+            ارفع صورة للمساحة (اختياري)، واكتب توجيه أو سيبه فاضي
             لإبداع حر. هتوصلك لحد 3 اقتراحات مختلفة.
           </p>
           {aiConfigured === false && (
