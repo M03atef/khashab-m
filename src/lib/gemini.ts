@@ -541,13 +541,15 @@ async function buildGeminiSuggestion(
   }
 
   const errors: string[] = [];
-  // Try each model with retry for 503
+  // Try each model with smart retry for 503/429
+  const MAX_RETRIES = 5;
   for (const model of GEMINI_MODELS) {
-    for (let attempt = 0; attempt < 2; attempt++) {
+    for (let attempt = 0; attempt < MAX_RETRIES; attempt++) {
     try {
       if (attempt > 0) {
-        console.info("[gemini] retrying model:", model, "attempt:", attempt + 1);
-        await new Promise((r) => setTimeout(r, 2000));
+        const delay = 3000 * attempt; // 3s, 6s, 9s, 12s
+        console.info("[gemini] retrying model:", model, "attempt:", attempt + 1, "after", delay, "ms");
+        await new Promise((r) => setTimeout(r, delay));
       } else {
         console.info("[gemini] trying model:", model);
       }
@@ -709,8 +711,8 @@ Do NOT change: wall color, floor type, ceiling, window position, existing furnit
       };
     } catch (error) {
       const errMsg = error instanceof Error ? error.message : String(error);
-      if (attempt === 0 && errMsg.includes("503")) {
-        console.info("[gemini] 503 on", model, "- will retry");
+      if (attempt < MAX_RETRIES - 1 && (errMsg.includes("503") || errMsg.includes("429"))) {
+        console.info("[gemini] retryable error on", model, "- will retry");
         continue;
       }
       errors.push(`${model}: ${errMsg.slice(0, 200)}`);
