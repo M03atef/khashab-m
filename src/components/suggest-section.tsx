@@ -203,20 +203,6 @@ export function SuggestSection() {
 
         <div className="grid lg:grid-cols-2 gap-4 sm:gap-8 lg:gap-10 items-start max-w-6xl mx-auto">
           <div className="space-y-4 bg-card/70 backdrop-blur-sm border border-border/70 rounded-2xl p-4 sm:p-6">
-            <label className="block space-y-2">
-              <span className="text-sm font-semibold text-primary">القسم</span>
-              <select
-                value={categoryId}
-                onChange={(e) => setCategoryId(e.target.value)}
-                className="w-full h-11 rounded-lg border border-input bg-background px-3 text-sm"
-              >
-                {CATEGORIES.map((c) => (
-                  <option key={c.id} value={c.id}>
-                    {c.icon} {c.name}
-                  </option>
-                ))}
-              </select>
-            </label>
 
             <label className="block space-y-2">
               <span className="text-sm font-semibold text-primary">
