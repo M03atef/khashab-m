@@ -382,7 +382,7 @@ function buildMockSuggestion(input: SuggestRequest): SuggestResult {
   const categoryName = category?.name || "إبداع حر";
   const categoryNameEn = category?.nameEn || "Free Creativity";
   const image =
-    category.images[variation % category.images.length] ?? category.images[0];
+    category?.images?.[variation % (category.images.length || 1)] ?? category?.images?.[0] ?? "/products/bookcases/bookcases-01.jpg";
 
   const packs = MOCK_PACKS[category.id] ?? [
     {
@@ -702,7 +702,7 @@ Do NOT change: wall color, floor type, ceiling, window position, existing furnit
         title: title || fallback.title,
         description: description || text.slice(0, 500) || fallback.description,
         styleNotes: styleNotes.length > 0 ? styleNotes : fallback.styleNotes,
-        previewImage: mockupImage || (category.images[variation % category.images.length] ?? category.images[0]),
+        previewImage: mockupImage || (category?.images?.[variation % (category.images.length || 1)] ?? category?.images?.[0] ?? "/products/bookcases/bookcases-01.jpg"),
         mockupImage,
         categoryId: category?.id || "general",
         categoryName: category?.name || "اقتراح عام",
