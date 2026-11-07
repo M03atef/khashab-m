@@ -66,3 +66,7 @@ test-photos/
 run-test.ps1
 *.patch
 room1.jpg
+Claude outputs/
+package-lock.json
+Claude outputs/
+package-lock.json
