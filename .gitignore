@@ -62,3 +62,7 @@ Thumbs.db
 # Download folder (temporary outputs)
 /download/
 advisor-tests/
+test-photos/
+run-test.ps1
+*.patch
+room1.jpg

@@ -51,7 +51,9 @@ STRICT RULES:
 1. Keep EVERYTHING else pixel-faithful to the original: same camera angle, framing, crop, perspective, lens, lighting, white balance and colors.
 2. Do NOT remove, move, restyle or recolor anything already in the photo — walls, wall texture, ceiling, moldings, curtains, furniture, objects on surfaces, cables, decorations all stay exactly as they are.
 3. The new piece must sit physically correct in the space: correct scale for the room, attached to the wall/floor where it should be, perspective-matched, with realistic contact shadows and light that matches the existing light in the photo.
-4. Photorealistic result that looks like a real photo taken after installation. No text, no labels, no watermark, no people.`;
+4. Existing architectural details (cornices, decorative moldings, niche edges, ceiling lines, door and window frames) keep their exact shape, color and material — never turn them into wood and never add lighting to them.
+5. Add only the described piece (and its own built-in lighting if mentioned). No extra decor, plants, books or objects unless the description asks for them.
+6. Keep the original sharpness and wall texture. Photorealistic result that looks like a real photo taken after installation. No text, no labels, no watermark, no people.`;
 }
 
 async function withTimeout<T>(ms: number, fn: (signal: AbortSignal) => Promise<T>): Promise<T> {
