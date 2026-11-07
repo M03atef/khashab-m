@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import type { Idea } from "@/lib/ai";
-import { renderInPlace } from "@/lib/visualize";
+import { imageProvider, renderInPlace } from "@/lib/visualize";
 
 export const runtime = "nodejs";
 export const maxDuration = 60; // Vercel Hobby max
@@ -41,7 +41,7 @@ export async function POST(request: Request) {
   };
   if (!idea.title) return NextResponse.json({ error: "مفيش اقتراح نرسمه." }, { status: 400 });
 
-  if (!process.env.GEMINI_API_KEY?.trim()) {
+  if (!imageProvider()) {
     return NextResponse.json({ error: "التصوّر مش متاح دلوقتي.", code: "NO_KEY" }, { status: 503 });
   }
 

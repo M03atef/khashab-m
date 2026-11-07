@@ -4,9 +4,11 @@ import type { Idea } from "@/lib/ai";
  * «شوفها في مكانك» — takes the customer's own photo and returns the SAME photo
  * with the suggested Khashaba piece added, everything else left untouched.
  *
- * Uses a Gemini image-editing model ("Nano Banana" family). Note: image output
- * is NOT on the Gemini free tier — the API key's project needs billing enabled.
- * Override models with GEMINI_IMAGE_MODEL="a,b".
+ * Providers (first one configured wins):
+ *  1. Cloudflare Workers AI — FLUX.2 [klein]. FREE daily allocation, no card needed.
+ *     CLOUDFLARE_ACCOUNT_ID + CLOUDFLARE_API_TOKEN (optional CF_IMAGE_MODEL).
+ *  2. Gemini image models ("Nano Banana") — needs billing on the key's project.
+ *     GEMINI_API_KEY (optional GEMINI_IMAGE_MODEL="a,b").
  */
 
 const DEFAULT_IMAGE_MODELS = ["gemini-3.1-flash-image-preview", "gemini-2.5-flash-image"];
@@ -71,7 +73,73 @@ export type RenderInput = {
   height?: number;
 };
 
+/* ---------------- Cloudflare Workers AI (free) ---------------- */
+
+const CF_MODEL = process.env.CF_IMAGE_MODEL?.trim() || "@cf/black-forest-labs/flux-2-klein-4b";
+
+/** FLUX.2 klein wants reference images under 512px; output keeps the photo's proportions. */
+async function shrinkForReference(buf: Buffer): Promise<{ data: Buffer; type: string }> {
+  try {
+    const sharp = (await import("sharp")).default;
+    const data = await sharp(buf).rotate().resize(512, 512, { fit: "inside", withoutEnlargement: true }).jpeg({ quality: 90 }).toBuffer();
+    return { data, type: "image/jpeg" };
+  } catch {
+    return { data: buf, type: "image/jpeg" };
+  }
+}
+
+function outputSize(width?: number, height?: number) {
+  const r = width && height ? width / height : 4 / 3;
+  const long = 1024;
+  const snap = (v: number) => Math.max(256, Math.min(1920, Math.round(v / 16) * 16));
+  return r >= 1 ? { w: snap(long), h: snap(long / r) } : { w: snap(long * r), h: snap(long) };
+}
+
+function sniffMime(b64: string) {
+  if (b64.startsWith("iVBOR")) return "image/png";
+  if (b64.startsWith("UklGR")) return "image/webp";
+  return "image/jpeg";
+}
+
+async function renderCloudflare(input: RenderInput, account: string, token: string, budgetMs: number) {
+  const ref = await shrinkForReference(Buffer.from(input.imageBase64, "base64"));
+  const { w, h } = outputSize(input.width, input.height);
+  const form = new FormData();
+  form.append("prompt", editPrompt(input.idea, input.note) + "\nThe input image (image 0) IS the room — output that same room photo with the piece added.");
+  form.append("input_image_0", new Blob([new Uint8Array(ref.data)], { type: ref.type }), "room.jpg");
+  form.append("width", String(w));
+  form.append("height", String(h));
+  const res = await withTimeout(budgetMs, (signal) =>
+    fetch(`https://api.cloudflare.com/client/v4/accounts/${account}/ai/run/${CF_MODEL}`, {
+      method: "POST",
+      signal,
+      headers: { Authorization: `Bearer ${token}` },
+      body: form,
+    })
+  );
+  const body = await res.json().catch(() => ({}));
+  const image: string | undefined = body?.result?.image ?? body?.image;
+  if (!res.ok || !image) {
+    const msg = body?.errors?.[0]?.message ?? res.statusText;
+    throw new Error(`cloudflare ${CF_MODEL}: ${res.status} ${String(msg).slice(0, 200)}`);
+  }
+  return { dataUrl: `data:${sniffMime(image)};base64,${image}`, model: CF_MODEL };
+}
+
+export function imageProvider(): "cloudflare" | "gemini" | null {
+  if (process.env.CLOUDFLARE_ACCOUNT_ID?.trim() && process.env.CLOUDFLARE_API_TOKEN?.trim()) return "cloudflare";
+  if (process.env.GEMINI_API_KEY?.trim()) return "gemini";
+  return null;
+}
+
 export async function renderInPlace(input: RenderInput, budgetMs = 54000): Promise<{ dataUrl: string; model: string }> {
+  const account = process.env.CLOUDFLARE_ACCOUNT_ID?.trim();
+  const token = process.env.CLOUDFLARE_API_TOKEN?.trim();
+  if (account && token) return renderCloudflare(input, account, token, budgetMs);
+  return renderGemini(input, budgetMs);
+}
+
+async function renderGemini(input: RenderInput, budgetMs: number): Promise<{ dataUrl: string; model: string }> {
   const key = process.env.GEMINI_API_KEY?.trim();
   if (!key) throw new Error("NO_KEY");
   const deadline = Date.now() + budgetMs;
