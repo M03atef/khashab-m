@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
-import { Camera, ImagePlus, Lightbulb, MapPin, Ruler, RotateCcw, Sparkles, X } from "lucide-react";
+import { Camera, ImagePlus, Lightbulb, MapPin, Ruler, RotateCcw, Sparkles, Wand2, X } from "lucide-react";
 import { WhatsAppIcon } from "@/components/whatsapp-icon";
 import { KhMark } from "@/components/brand/logo";
 import { CATEGORIES } from "@/lib/catalog";
@@ -20,6 +20,10 @@ type Idea = {
   materials: string[];
 };
 type Advice = { isSpace: boolean; seen: string; primary: Idea | null; alternatives: Idea[]; tip?: string };
+type Photo = { dataUrl: string; blob: Blob; width: number; height: number };
+type Render = { status: "loading" | "done" | "error"; src?: string; error?: string };
+
+const RENDERING = ["بنركّب القطعة في صورتك…", "بنظبط المقاس والضل…", "لمسات أخيرة…"];
 
 const NOTE_CHIPS = ["ضيف وحدات هنا", "عايز مكتبة", "مكان للشاشة", "ركن قهوة", "تكسية للحيطة"];
 const THINKING = [
@@ -30,7 +34,7 @@ const THINKING = [
 ];
 
 /** Downscale phone photos so the request stays small and fast. */
-async function compress(file: File): Promise<{ dataUrl: string; blob: Blob }> {
+async function compress(file: File): Promise<Photo> {
   const bitmap = await createImageBitmap(file);
   const scale = Math.min(1, 1280 / Math.max(bitmap.width, bitmap.height));
   const canvas = document.createElement("canvas");
@@ -40,7 +44,7 @@ async function compress(file: File): Promise<{ dataUrl: string; blob: Blob }> {
   bitmap.close();
   const dataUrl = canvas.toDataURL("image/jpeg", 0.82);
   const blob = await new Promise<Blob>((r) => canvas.toBlob((b) => r(b!), "image/jpeg", 0.82));
-  return { dataUrl, blob };
+  return { dataUrl, blob, width: canvas.width, height: canvas.height };
 }
 
 function categoryOf(id: string) {
@@ -50,12 +54,14 @@ function categoryOf(id: string) {
 export function Advisor() {
   const fileRef = useRef<HTMLInputElement>(null);
   const resultRef = useRef<HTMLDivElement>(null);
-  const [photo, setPhoto] = useState<{ dataUrl: string; blob: Blob } | null>(null);
+  const [photo, setPhoto] = useState<Photo | null>(null);
   const [note, setNote] = useState("");
   const [loading, setLoading] = useState(false);
   const [step, setStep] = useState(0);
   const [error, setError] = useState<string | null>(null);
   const [advice, setAdvice] = useState<Advice | null>(null);
+  const [renders, setRenders] = useState<Record<number, Render>>({});
+  const runId = useRef(0);
 
   useEffect(() => {
     if (!loading) return;
@@ -68,6 +74,8 @@ export function Advisor() {
     if (!file.type.startsWith("image/")) return setError("ارفع صورة بس (JPG أو PNG).");
     setError(null);
     setAdvice(null);
+    setRenders({});
+    runId.current++;
     try {
       setPhoto(await compress(file));
     } catch {
@@ -81,6 +89,8 @@ export function Advisor() {
     setLoading(true);
     setError(null);
     setAdvice(null);
+    setRenders({});
+    const run = ++runId.current;
     try {
       const res = await fetch("/api/suggest", {
         method: "POST",
@@ -89,7 +99,10 @@ export function Advisor() {
       });
       const data = await res.json().catch(() => ({}));
       if (!res.ok) throw new Error(data.error || "حصلت مشكلة — جرّب تاني.");
+      if (run !== runId.current) return;
       setAdvice(data.advice);
+      // Show the suggestion inside the customer's own photo right away.
+      if (data.advice?.isSpace && data.advice.primary) visualize(0, data.advice.primary, run);
       setTimeout(() => resultRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }), 120);
     } catch (e) {
       setError(e instanceof Error ? e.message : "حصلت مشكلة — جرّب تاني.");
@@ -98,7 +111,39 @@ export function Advisor() {
     }
   };
 
+  /** Same photo, same angle — with the suggested piece added. */
+  const visualize = async (index: number, idea: Idea, run = runId.current) => {
+    if (!photo) return;
+    setRenders((r) => ({ ...r, [index]: { status: "loading" } }));
+    try {
+      const res = await fetch("/api/visualize", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          imageBase64: photo.dataUrl,
+          mimeType: "image/jpeg",
+          note,
+          idea,
+          width: photo.width,
+          height: photo.height,
+        }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (run !== runId.current) return;
+      if (!res.ok || !data.image) throw new Error(data.error || "ماقدرناش نرسم القطعة دلوقتي.");
+      setRenders((r) => ({ ...r, [index]: { status: "done", src: data.image } }));
+    } catch (e) {
+      if (run !== runId.current) return;
+      setRenders((r) => ({
+        ...r,
+        [index]: { status: "error", error: e instanceof Error ? e.message : "ماقدرناش نرسم القطعة دلوقتي." },
+      }));
+    }
+  };
+
   const reset = () => {
+    runId.current++;
+    setRenders({});
     setPhoto(null);
     setAdvice(null);
     setNote("");
@@ -117,10 +162,20 @@ export function Advisor() {
   /** On phones, share the actual photo + brief straight into WhatsApp. */
   const sendToWorkshop = async () => {
     const text = brief();
-    const file = photo ? new File([photo.blob], "my-space.jpg", { type: "image/jpeg" }) : null;
+    const files: File[] = [];
+    if (photo) files.push(new File([photo.blob], "my-space.jpg", { type: "image/jpeg" }));
+    const rendered = renders[0]?.src;
+    if (rendered) {
+      try {
+        const b = await (await fetch(rendered)).blob();
+        files.push(new File([b], "khashaba-idea." + (b.type.split("/")[1] || "png"), { type: b.type || "image/png" }));
+      } catch {
+        /* skip the render if it can't be attached */
+      }
+    }
     try {
-      if (file && navigator.canShare?.({ files: [file] })) {
-        await navigator.share({ files: [file], text });
+      if (files.length && navigator.canShare?.({ files })) {
+        await navigator.share({ files, text });
         return;
       }
     } catch {
@@ -157,8 +212,8 @@ export function Advisor() {
           {/* Photo slot */}
           <div className="relative overflow-hidden rounded-[28px] border border-paper/15 bg-walnut-deep/60">
             {photo ? (
-              <div className="relative aspect-[4/3]">
-                <img src={photo.dataUrl} alt="صورة المكان بتاعك" className="h-full w-full object-cover" />
+              <div className="relative" style={{ aspectRatio: `${photo.width} / ${photo.height}` }}>
+                <img src={photo.dataUrl} alt="صورة المكان بتاعك" className="h-full w-full object-contain" />
                 {loading && <ScanOverlay />}
                 {!loading && (
                   <button
@@ -266,7 +321,16 @@ export function Advisor() {
         </Reveal>
 
         <div ref={resultRef} className="scroll-mt-20">
-          <AnimatePresence>{advice && <Result advice={advice} onSend={sendToWorkshop} onReset={reset} />}</AnimatePresence>
+          <AnimatePresence>{advice && photo && (
+              <Result
+                advice={advice}
+                photo={photo}
+                renders={renders}
+                onVisualize={visualize}
+                onSend={sendToWorkshop}
+                onReset={reset}
+              />
+            )}</AnimatePresence>
         </div>
       </div>
     </section>
@@ -294,7 +358,21 @@ function ScanOverlay() {
   );
 }
 
-function Result({ advice, onSend, onReset }: { advice: Advice; onSend: () => void; onReset: () => void }) {
+function Result({
+  advice,
+  photo,
+  renders,
+  onVisualize,
+  onSend,
+  onReset,
+}: {
+  advice: Advice;
+  photo: Photo;
+  renders: Record<number, Render>;
+  onVisualize: (index: number, idea: Idea) => void;
+  onSend: () => void;
+  onReset: () => void;
+}) {
   if (!advice.isSpace || !advice.primary) {
     return (
       <motion.div
@@ -326,7 +404,15 @@ function Result({ advice, onSend, onReset }: { advice: Advice; onSend: () => voi
       )}
 
       {ideas.map((idea, i) => (
-        <IdeaCard key={idea.title + i} idea={idea} primary={i === 0} index={i} />
+        <IdeaCard
+          key={idea.title + i}
+          idea={idea}
+          primary={i === 0}
+          index={i}
+          photo={photo}
+          render={renders[i]}
+          onVisualize={() => onVisualize(i, idea)}
+        />
       ))}
 
       {advice.tip && (
@@ -357,7 +443,21 @@ function Result({ advice, onSend, onReset }: { advice: Advice; onSend: () => voi
   );
 }
 
-function IdeaCard({ idea, primary, index }: { idea: Idea; primary: boolean; index: number }) {
+function IdeaCard({
+  idea,
+  primary,
+  index,
+  photo,
+  render,
+  onVisualize,
+}: {
+  idea: Idea;
+  primary: boolean;
+  index: number;
+  photo: Photo;
+  render?: Render;
+  onVisualize: () => void;
+}) {
   const cat = categoryOf(idea.categoryId);
   const pics = cat?.images.slice(0, primary ? 3 : 1) ?? [];
   return (
@@ -367,6 +467,8 @@ function IdeaCard({ idea, primary, index }: { idea: Idea; primary: boolean; inde
       transition={{ delay: 0.15 + index * 0.15, duration: 0.7, ease: EASE }}
       className={cn("overflow-hidden rounded-[28px] text-walnut", primary ? "bg-paper" : "bg-linen")}
     >
+      {render && <InPlace photo={photo} render={render} onRetry={onVisualize} />}
+
       {primary && pics.length > 0 && (
         <div className="no-scrollbar flex snap-x snap-mandatory gap-2 overflow-x-auto p-2">
           {pics.map((src) => (
@@ -388,6 +490,15 @@ function IdeaCard({ idea, primary, index }: { idea: Idea; primary: boolean; inde
           </span>
           <h3 className={cn("mt-1 font-extrabold leading-snug", primary ? "text-2xl" : "text-lg")}>{idea.title}</h3>
           <p className="mt-2 text-[15px] leading-7 text-walnut/75">{idea.description}</p>
+          {!primary && !render && (
+            <button
+              onClick={onVisualize}
+              className="mt-3 inline-flex items-center gap-2 rounded-full bg-walnut px-4 py-2 text-sm font-semibold text-paper active:scale-[0.98]"
+            >
+              <Wand2 className="h-4 w-4" />
+              شوفها في مكانك
+            </button>
+          )}
           {primary && (
             <>
               <dl className="mt-4 space-y-2 text-sm">
@@ -418,5 +529,91 @@ function IdeaCard({ idea, primary, index }: { idea: Idea; primary: boolean; inde
         </div>
       </div>
     </motion.article>
+  );
+}
+
+/** The customer's own photo with the piece added, plus a before/after slider. */
+function InPlace({ photo, render, onRetry }: { photo: Photo; render: Render; onRetry: () => void }) {
+  const [pos, setPos] = useState(100);
+  const [step, setStep] = useState(0);
+  useEffect(() => {
+    if (render.status !== "loading") return;
+    const t = setInterval(() => setStep((s) => Math.min(s + 1, RENDERING.length - 1)), 6000);
+    return () => {
+      clearInterval(t);
+      setStep(0);
+    };
+  }, [render.status]);
+
+  return (
+    <div className="p-2">
+      <div
+        dir="ltr"
+        className="relative w-full overflow-hidden rounded-[22px] bg-walnut-deep"
+        style={{ aspectRatio: `${photo.width} / ${photo.height}` }}
+      >
+        {render.status === "done" && render.src ? (
+          <>
+            {/* after */}
+            <img src={render.src} alt="القطعة المقترحة في مكانك" className="absolute inset-0 h-full w-full object-cover" />
+            {/* before, revealed from the right as the handle moves */}
+            <img
+              src={photo.dataUrl}
+              alt="صورتك قبل"
+              className="absolute inset-0 h-full w-full object-cover"
+              style={{ clipPath: `inset(0 0 0 ${pos}%)` }}
+            />
+            <div className="pointer-events-none absolute inset-y-0 w-0.5 bg-paper/90" style={{ left: `${pos}%` }} />
+            <span className="pointer-events-none absolute left-3 top-3 rounded-full bg-walnut-deep/70 px-3 py-1 text-xs font-semibold text-paper backdrop-blur">
+              بعد
+            </span>
+            {pos < 100 && (
+              <span className="pointer-events-none absolute right-3 top-3 rounded-full bg-walnut-deep/70 px-3 py-1 text-xs font-semibold text-paper backdrop-blur">
+                قبل
+              </span>
+            )}
+            <input
+              type="range"
+              min={0}
+              max={100}
+              value={pos}
+              onChange={(e) => setPos(Number(e.target.value))}
+              aria-label="قارن قبل وبعد"
+              className="absolute inset-0 h-full w-full cursor-ew-resize opacity-0"
+            />
+          </>
+        ) : (
+          <>
+            <img src={photo.dataUrl} alt="صورتك" className="absolute inset-0 h-full w-full object-cover opacity-70" />
+            {render.status === "loading" ? (
+              <>
+                <ScanOverlay />
+                <span className="absolute inset-x-0 bottom-4 mx-auto w-fit rounded-full bg-walnut-deep/80 px-4 py-2 text-sm font-semibold text-paper backdrop-blur">
+                  {RENDERING[step]}
+                </span>
+              </>
+            ) : (
+              <div className="absolute inset-0 grid place-items-center bg-walnut-deep/60 p-6 text-center text-paper" dir="rtl">
+                <div>
+                  <p className="text-sm leading-7">{render.error}</p>
+                  <button onClick={onRetry} className="mt-3 inline-flex items-center gap-2 rounded-full bg-oak px-4 py-2 text-sm font-bold text-walnut-deep">
+                    <RotateCcw className="h-4 w-4" />
+                    جرّب تاني
+                  </button>
+                </div>
+              </div>
+            )}
+          </>
+        )}
+      </div>
+      {render.status === "done" && (
+        <div className="mt-2 flex items-center justify-between px-2 text-xs text-walnut/60">
+          <span>اسحب على الصورة عشان تقارن قبل وبعد</span>
+          <button onClick={() => setPos((p) => (p === 100 ? 50 : 100))} className="font-semibold text-oak">
+            {pos === 100 ? "قارن" : "بعد بس"}
+          </button>
+        </div>
+      )}
+    </div>
   );
 }
