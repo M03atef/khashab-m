@@ -17,6 +17,7 @@ type Idea = {
   placement: string;
   size: string;
   materials: string[];
+  visual?: string;
 };
 type Advice = { isSpace: boolean; seen: string; primary: Idea | null; alternatives: Idea[]; tip?: string };
 type Photo = { dataUrl: string; blob: Blob; width: number; height: number };

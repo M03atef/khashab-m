@@ -9,6 +9,7 @@
  *
  * Results land in advisor-tests/<time>/ — open report.html to see before/after.
  */
+import "./load-env";
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { basename, extname, join } from "node:path";
 import { getAdvice } from "@/lib/ai";

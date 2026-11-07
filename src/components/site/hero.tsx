@@ -1,7 +1,6 @@
 "use client";
 
 import { useRef } from "react";
-import { getImageProps } from "next/image";
 import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import { ArrowLeft, Sparkles } from "lucide-react";
 import { WhatsAppIcon } from "@/components/whatsapp-icon";
@@ -11,19 +10,61 @@ import { EASE } from "./motion";
 
 const LINES = ["نصنع لك الأثاث", "الذي يدوم."];
 
-/** Hero photo: a slatted walnut wall — the same slats as the logo. */
-function HeroPicture() {
-  const alt = "صالة بتكسية حيطة من شرائح خشب طبيعي";
-  const { props } = getImageProps({
-    alt,
-    src: "/products/wall_cladding/062cea1a34af237dca3b40c6a90b6ec5.jpg",
-    width: 1200,
-    height: 1800,
-    sizes: "100vw",
-    quality: 75,
-    priority: true,
-  });
-  return <img {...props} alt={alt} className="absolute inset-0 h-full w-full object-cover object-[50%_35%] md:object-[50%_55%]" />;
+/**
+ * Opening: an empty room furnishes itself in Khashaba woodwork —
+ * bare wall → slat cladding → built-in units → finished, lit room.
+ */
+const STAGES = [
+  { src: "/hero/stage-0.jpg", label: "حيطة فاضية" },
+  { src: "/hero/stage-1.jpg", label: "تكسية شرائح بلوط" },
+  { src: "/hero/stage-2.jpg", label: "وحدات على المقاس" },
+  { src: "/hero/stage-3.jpg", label: "بيت بيتعاش فيه" },
+];
+const STEP = 0.8; // seconds between stages
+export const HERO_INTRO = STEP * (STAGES.length - 1) + 0.3;
+
+function HeroSequence() {
+  const reduce = useReducedMotion();
+  if (reduce) {
+    return <img src={STAGES[3].src} alt="صالة بتكسية شرائح خشب ووحدات على المقاس" className="absolute inset-0 h-full w-full object-cover" />;
+  }
+  return (
+    <>
+      {STAGES.map((s, i) => (
+        <motion.img
+          key={s.src}
+          src={s.src}
+          alt={i === STAGES.length - 1 ? "صالة بتكسية شرائح خشب ووحدات على المقاس" : ""}
+          aria-hidden={i !== STAGES.length - 1}
+          fetchPriority={i === 0 || i === STAGES.length - 1 ? "high" : "auto"}
+          className="absolute inset-0 h-full w-full object-cover"
+          initial={{ opacity: i === 0 ? 1 : 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.25 + i * STEP, duration: 0.9, ease: "easeInOut" }}
+        />
+      ))}
+    </>
+  );
+}
+
+function StageLabel() {
+  const reduce = useReducedMotion();
+  if (reduce) return null;
+  return (
+    <div className="pointer-events-none absolute inset-x-0 top-24 z-10 flex justify-center" aria-hidden>
+      {STAGES.map((s, i) => (
+        <motion.span
+          key={s.label}
+          className="absolute rounded-full border border-paper/20 bg-walnut-deep/40 px-4 py-1.5 text-xs font-semibold text-paper/90 backdrop-blur-md"
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: [0, 1, 1, 0], y: [8, 0, 0, -8] }}
+          transition={{ delay: 0.2 + i * STEP, duration: STEP + 0.2, times: [0, 0.2, 0.8, 1] }}
+        >
+          {String(i + 1).padStart(2, "0")} — {s.label}
+        </motion.span>
+      ))}
+    </div>
+  );
 }
 
 export function Hero() {
@@ -41,10 +82,17 @@ export function Hero() {
     >
       <motion.div className="absolute inset-0 -z-10" style={{ y: imgY }}>
         <div className="absolute inset-0 animate-ken">
-          <HeroPicture />
+          <HeroSequence />
         </div>
       </motion.div>
-      <div className="absolute inset-0 -z-10 bg-gradient-to-t from-walnut-deep via-walnut-deep/55 to-walnut-deep/20" />
+      <StageLabel />
+      {/* Light while the room furnishes itself, then deepens so the headline reads */}
+      <motion.div
+        className="absolute inset-0 -z-10 bg-gradient-to-t from-walnut-deep via-walnut-deep/55 to-walnut-deep/20"
+        initial={reduce ? false : { opacity: 0.25 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: HERO_INTRO - 0.2, duration: 0.9, ease: EASE }}
+      />
       <div className="absolute inset-x-0 top-0 -z-10 h-40 bg-gradient-to-b from-black/45 to-transparent" />
 
       <motion.div
@@ -55,7 +103,7 @@ export function Hero() {
           className="mb-5 flex items-center gap-3 text-sm text-oak-soft"
           initial={reduce ? false : { opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2, duration: 0.7, ease: EASE }}
+          transition={{ delay: HERO_INTRO, duration: 0.7, ease: EASE }}
         >
           <span className="h-px w-8 bg-oak-soft/60" />
           ورشة أثاث خشب طبيعي · القاهرة
@@ -68,7 +116,7 @@ export function Hero() {
                 className={"block " + (i === 1 ? "text-oak-soft" : "")}
                 initial={reduce ? false : { y: "110%" }}
                 animate={{ y: "0%" }}
-                transition={{ delay: 0.35 + i * 0.14, duration: 1, ease: EASE }}
+                transition={{ delay: HERO_INTRO + 0.1 + i * 0.14, duration: 1, ease: EASE }}
               >
                 {line}
               </motion.span>
@@ -80,7 +128,7 @@ export function Hero() {
           className="mt-5 max-w-md text-base leading-8 text-paper/80 sm:text-lg"
           initial={reduce ? false : { opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.75, duration: 0.8, ease: EASE }}
+          transition={{ delay: HERO_INTRO + 0.5, duration: 0.8, ease: EASE }}
         >
           قطع خشب طبيعي بتتعمل بإيد مصرية على مقاس بيتك بالظبط — من الفكرة لحد باب البيت.
         </motion.p>
@@ -89,7 +137,7 @@ export function Hero() {
           className="mt-8 flex flex-col gap-3 sm:flex-row"
           initial={reduce ? false : { opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.9, duration: 0.8, ease: EASE }}
+          transition={{ delay: HERO_INTRO + 0.65, duration: 0.8, ease: EASE }}
         >
           <button
             onClick={() => scrollToId("advisor")}

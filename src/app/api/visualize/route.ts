@@ -38,6 +38,7 @@ export async function POST(request: Request) {
     placement: s(raw.placement, 300),
     size: s(raw.size, 120),
     materials: Array.isArray(raw.materials) ? raw.materials.map((m) => s(m, 80)).filter(Boolean).slice(0, 4) : [],
+    visual: s(raw.visual, 800) || undefined,
   };
   if (!idea.title) return NextResponse.json({ error: "مفيش اقتراح نرسمه." }, { status: 400 });
 

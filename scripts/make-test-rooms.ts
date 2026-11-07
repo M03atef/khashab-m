@@ -5,6 +5,7 @@
  *
  *   npx tsx scripts/make-test-rooms.ts
  */
+import "./load-env";
 import { existsSync, mkdirSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 
