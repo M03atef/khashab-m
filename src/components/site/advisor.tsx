@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
 import { Camera, ImagePlus, Lightbulb, MapPin, Ruler, RotateCcw, Sparkles, Wand2, X } from "lucide-react";
 import { WhatsAppIcon } from "@/components/whatsapp-icon";
@@ -459,7 +458,6 @@ function IdeaCard({
   onVisualize: () => void;
 }) {
   const cat = categoryOf(idea.categoryId);
-  const pics = cat?.images.slice(0, primary ? 3 : 1) ?? [];
   return (
     <motion.article
       initial={{ opacity: 0, y: 24 }}
@@ -469,21 +467,7 @@ function IdeaCard({
     >
       {render && <InPlace photo={photo} render={render} onRetry={onVisualize} />}
 
-      {primary && pics.length > 0 && (
-        <div className="no-scrollbar flex snap-x snap-mandatory gap-2 overflow-x-auto p-2">
-          {pics.map((src) => (
-            <div key={src} className="relative aspect-[4/5] w-[70%] shrink-0 snap-start overflow-hidden rounded-[22px] sm:w-[40%]">
-              <Image src={src} alt={`${cat?.name} من شغل خشبة`} fill sizes="(min-width:640px) 40vw, 70vw" className="object-cover" />
-            </div>
-          ))}
-        </div>
-      )}
       <div className={cn("flex gap-4 p-5", !primary && "items-start")}>
-        {!primary && pics[0] && (
-          <div className="relative h-24 w-20 shrink-0 overflow-hidden rounded-2xl">
-            <Image src={pics[0]} alt={cat?.name ?? ""} fill sizes="80px" className="object-cover" />
-          </div>
-        )}
         <div className="min-w-0 flex-1">
           <span className="text-xs font-semibold text-oak">
             {primary ? "الاقتراح الأساسي" : index === 1 ? "بديل أول" : "بديل تاني"} · {cat?.name ?? "تصميم خاص"}
