@@ -7,12 +7,28 @@ export type Category = {
   id: string;
   name: string;
   nameEn: string;
+  /** One-line pitch for cards on mobile */
+  short: string;
   description: string;
   icon: string;
   images: string[];
 };
 
-export const CATEGORIES: Category[] = [
+/** Short, card-friendly lines per category (kept separate so descriptions stay intact). */
+export const SHORT: Record<string, string> = {
+  bookcases: "حائطية أو أرضية، بإضاءة مخفية ومقاس حيطتك بالظبط.",
+  consoles: "أول قطعة تتشاف في البيت — للمدخل والصالة.",
+  desks: "مكاتب مريحة بتخزين ذكي للأسلاك والأوراق.",
+  doors: "داخلي وخارجي، زان وجوز وبلط بتشطيب يدوم.",
+  floating_shelves: "تركيب مخفي، يشيل تقيل ويكبّر الحيطة.",
+  modern_tables: "سفرة وقهوة — قلب البيت بتصميم مودرن.",
+  partitions: "تقسيم المساحة بخصوصية من غير ما تضيق.",
+  tv_units: "معلقة أو أرضية، والكابلات كلها مستخبية.",
+  wall_cladding: "شرائح خشب تحوّل أي حيطة لتحفة دافية.",
+  coffee_corner: "ركن قهوة كامل: رفوف، تخزين، وإضاءة دافية.",
+};
+
+const RAW: Omit<Category, "short">[] = [
   {
     id: "bookcases",
     name: "مكتبات",
@@ -24,7 +40,7 @@ export const CATEGORIES: Category[] = [
       "/products/bookcases/bceec4e9134a3a849fd7e8400ad73f7e.jpg",
       "/products/bookcases/bookcases-02.jpg",
       "/products/bookcases/bookcases-03.jpg",
-      "/products/bookcases/bookcases-05.png",
+      "/products/bookcases/bookcases-05.jpg",
     ],
   },
   {
@@ -112,7 +128,7 @@ export const CATEGORIES: Category[] = [
       "/products/partitions/8a1865502a7d10f5008ca3a0c170822f.jpg",
       "/products/partitions/bf38ac44e70c4b66f0b606e9c87d53cb.jpg",
       "/products/partitions/d42716b8c6b437016d4e34565a8169a8.jpg",
-      "/products/partitions/download.png",
+      "/products/partitions/partitions-03.jpg",
       "/products/partitions/partitions-01.jpg",
       "/products/partitions/partitions-02.jpg",
     ],
@@ -161,6 +177,11 @@ export const CATEGORIES: Category[] = [
     ],
   },
 ];
+
+export const CATEGORIES: Category[] = RAW.map((c) => ({
+  ...c,
+  short: SHORT[c.id] ?? c.description,
+}));
 
 // معلومات البراند
 export const BRAND = {

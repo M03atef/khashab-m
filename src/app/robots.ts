@@ -1,8 +1,8 @@
 import type { MetadataRoute } from "next";
+import { SITE_URL } from "@/lib/site";
 
 export default function robots(): MetadataRoute.Robots {
-  const base =
-    process.env.NEXT_PUBLIC_SITE_URL?.trim() || "http://127.0.0.1:43127";
+  const base = SITE_URL;
   return {
     rules: {
       userAgent: "*",

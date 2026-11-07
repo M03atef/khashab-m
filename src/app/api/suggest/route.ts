@@ -1,66 +1,45 @@
-import type { SuggestResult } from "@/lib/gemini";
 import { NextResponse } from "next/server";
-import {
-  createSuggestion,
-  isAiConfigured,
-  type SuggestRequest,
-} from "@/lib/gemini";
-import { CATEGORIES } from "@/lib/catalog";
+import { aiProvider, getAdvice } from "@/lib/ai";
 
 export const runtime = "nodejs";
-export const maxDuration = 60; // Vercel Hobby plan max
+export const maxDuration = 60; // Vercel Hobby max
 
-type Body = {
-  categoryId?: string;
-  caption?: string;
-  imageBase64?: string;
-  mimeType?: string;
-  variation?: number;
-  style?: string;
-  colorPalette?: string;
-};
-
-export async function POST(request: Request) {
-  try {
-    const body = (await request.json()) as Body;
-    const categoryId = body.categoryId?.trim() || undefined;
-
-    const input: SuggestRequest = {
-      categoryId,
-      caption: body.caption?.slice(0, 500),
-      imageBase64: body.imageBase64,
-      mimeType: body.mimeType,
-      variation: Number.isFinite(body.variation) ? Number(body.variation) : 0,
-    };
-
-    const suggestion = await createSuggestion(input);
-    const aiConfigured = isAiConfigured();
-    const debug = (suggestion as SuggestResult & { _debug?: string })._debug;
-    return NextResponse.json({
-      suggestion,
-      aiConfigured,
-      mode: suggestion.mock ? "mock" : "live",
-      // legacy alias for older clients
-      geminiConfigured: aiConfigured,
-      ...(debug ? { debug } : {}),
-    });
-  } catch (error) {
-    const errMsg = error instanceof Error ? error.message : String(error);
-    console.error("[api/suggest] error:", errMsg);
-    return NextResponse.json(
-      { error: "تعذر إنشاء الاقتراح الآن. جرّب تاني بعد شوية.", detail: errMsg },
-      { status: 500 }
-    );
-  }
-}
+const MAX_BYTES = 3.5 * 1024 * 1024;
+const MIME = new Set(["image/jpeg", "image/png", "image/webp"]);
 
 export async function GET() {
-  const aiConfigured = isAiConfigured();
-  return NextResponse.json({
-    ok: true,
-    aiConfigured,
-    mode: aiConfigured ? "live" : "mock",
-    geminiConfigured: aiConfigured,
-    categories: CATEGORIES.map((c) => ({ id: c.id, name: c.name })),
-  });
+  return NextResponse.json({ ok: true, ready: aiProvider() !== null });
+}
+
+export async function POST(request: Request) {
+  let body: { imageBase64?: string; mimeType?: string; note?: string };
+  try {
+    body = await request.json();
+  } catch {
+    return NextResponse.json({ error: "الطلب مش مفهوم — جرّب تاني." }, { status: 400 });
+  }
+
+  const data = (body.imageBase64 ?? "").replace(/^data:[^;]+;base64,/, "");
+  const mimeType = body.mimeType && MIME.has(body.mimeType) ? body.mimeType : "image/jpeg";
+  if (!data) return NextResponse.json({ error: "ارفع صورة للمكان الأول." }, { status: 400 });
+  if (data.length * 0.75 > MAX_BYTES)
+    return NextResponse.json({ error: "الصورة كبيرة — جرّب صورة تانية." }, { status: 413 });
+
+  if (!aiProvider()) {
+    return NextResponse.json(
+      { error: "المستشار مش متاح دلوقتي — ابعتلنا الصورة على واتساب وهنرد عليك بنفسنا.", code: "NO_KEY" },
+      { status: 503 }
+    );
+  }
+
+  try {
+    const advice = await getAdvice({ imageBase64: data, mimeType, note: body.note?.trim().slice(0, 400) || undefined });
+    return NextResponse.json({ advice });
+  } catch (e) {
+    console.error("[api/suggest]", e instanceof Error ? e.message : e);
+    return NextResponse.json(
+      { error: "المستشار مشغول شوية — جرّب كمان دقيقة، أو ابعتلنا الصورة على واتساب.", code: "AI_FAILED" },
+      { status: 502 }
+    );
+  }
 }

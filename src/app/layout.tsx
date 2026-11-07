@@ -1,26 +1,26 @@
-import type { Metadata } from "next";
-import { Cairo, Tajawal } from "next/font/google";
+import type { Metadata, Viewport } from "next";
+import "@fontsource/alexandria/arabic-300.css";
+import "@fontsource/alexandria/arabic-400.css";
+import "@fontsource/alexandria/arabic-600.css";
+import "@fontsource/alexandria/arabic-800.css";
+import "@fontsource/alexandria/latin-400.css";
+import "@fontsource/alexandria/latin-600.css";
+import "@fontsource/cormorant-garamond/latin-500.css";
+import "@fontsource/cormorant-garamond/latin-600.css";
+import "@fontsource/cormorant-garamond/latin-500-italic.css";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
+import { SITE_URL } from "@/lib/site";
 
-const cairo = Cairo({
-  variable: "--font-cairo",
-  subsets: ["arabic", "latin"],
-  weight: ["300", "400", "500", "600", "700", "800", "900"],
-  display: "swap",
-});
-
-const tajawal = Tajawal({
-  variable: "--font-tajawal",
-  subsets: ["arabic", "latin"],
-  weight: ["400", "500", "700", "800"],
-  display: "swap",
-});
+export const viewport: Viewport = {
+  themeColor: "#3a2516",
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+};
 
 export const metadata: Metadata = {
-  metadataBase: new URL(
-    process.env.NEXT_PUBLIC_SITE_URL?.trim() || "http://127.0.0.1:43127"
-  ),
+  metadataBase: new URL(SITE_URL),
   title: "خشبة | معرض الأثاث الخشبي الفاخر",
   description:
     "خشبة - براند متخصص في تصنيع الأثاث الخشبي الفاخر: مكتبات، كونسولات، مكاتب، أبواب، رفوف معلقة، ترابيزات مودرن، فواصل، وحدات تلفزيون، وتكسية جدران. نصنع لك قطعة فريدة تدوم.",
@@ -40,9 +40,10 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: "خشبة" }],
   icons: {
-    icon: "/khashaba-logo.png",
-    apple: "/khashaba-logo.png",
+    icon: [{ url: "/brand/icon.svg", type: "image/svg+xml" }, { url: "/brand/icon-192.png", sizes: "192x192" }],
+    apple: "/brand/apple-touch-icon.png",
   },
+  manifest: "/manifest.webmanifest",
   openGraph: {
     title: "خشبة | معرض الأثاث الخشبي الفاخر",
     description:
@@ -52,7 +53,7 @@ export const metadata: Metadata = {
     locale: "ar_EG",
     images: [
       {
-        url: "/hero-bg.jpg",
+        url: "/brand/og.jpg",
         width: 1200,
         height: 630,
         alt: "خشبة — أثاث خشبي فاخر",
@@ -63,7 +64,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "خشبة | معرض الأثاث الخشبي الفاخر",
     description: "أثاث خشبي فاخر بتصميمات مودرن وإتقان يدوي.",
-    images: ["/hero-bg.jpg"],
+    images: ["/brand/og.jpg"],
   },
 };
 
@@ -74,7 +75,7 @@ const localBusinessJsonLd = {
   alternateName: "Khashaba",
   description:
     "براند متخصص في تصنيع الأثاث الخشبي الفاخر في مصر: مكتبات، كونسولات، مكاتب، أبواب، رفوف، وحدات تلفزيون وتكسية جدران.",
-  url: process.env.NEXT_PUBLIC_SITE_URL?.trim() || "http://127.0.0.1:43127",
+  url: SITE_URL,
   telephone: "+201070386575",
   email: "info@khashaba.com",
   address: {
@@ -82,7 +83,9 @@ const localBusinessJsonLd = {
     addressLocality: "القاهرة",
     addressCountry: "EG",
   },
-  image: "/khashaba-logo.png",
+  image: `${SITE_URL}/brand/og.jpg`,
+  logo: `${SITE_URL}/brand/icon-512.png`,
+  openingHours: "Sa-Th 10:00-21:00",
   sameAs: [
     "https://www.facebook.com/profile.php?id=61594437931625",
     "https://www.instagram.com/khashaba.wood/?hl=en",
@@ -97,13 +100,6 @@ export default function RootLayout({
   return (
     <html lang="ar" dir="rtl" suppressHydrationWarning>
       <head>
-        {/* Keep Next.js DevTools "N" from covering the WhatsApp FAB */}
-        <style
-          dangerouslySetInnerHTML={{
-            __html:
-              "nextjs-portal{display:none!important;visibility:hidden!important;pointer-events:none!important}",
-          }}
-        />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -112,7 +108,7 @@ export default function RootLayout({
         />
       </head>
       <body
-        className={`${cairo.variable} ${tajawal.variable} antialiased bg-background text-foreground font-cairo`}
+        className="antialiased bg-background text-foreground font-sans"
       >
         {children}
         <Toaster />
