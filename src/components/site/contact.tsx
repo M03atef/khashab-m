@@ -51,7 +51,7 @@ export function Contact() {
         <div className="mt-16 grid gap-10 border-t border-paper/10 pt-10 sm:grid-cols-2 lg:grid-cols-4">
           <div>
             <Wordmark latin className="h-14 w-auto" latinClassName="opacity-60" />
-            <p className="mt-4 text-sm leading-7 text-paper/60">{BRAND.tagline} — أثاث خشب طبيعي مصنوع بإتقان في مصر.</p>
+            <p className="mt-4 text-sm leading-7 text-paper/60">{BRAND.tagline}. مصنوع في مصر، ويتركّب لحد باب البيت.</p>
           </div>
           <ul className="space-y-3 text-sm text-paper/75">
             <li className="flex gap-3">
