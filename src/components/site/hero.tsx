@@ -24,69 +24,65 @@ export function Hero() {
         };
 
   return (
-    <section id="home" className="bg-walnut-deep text-paper">
-      <div className="grid min-h-[100svh] lg:grid-cols-2">
-        <div className="order-2 flex flex-col justify-center px-5 pb-8 pt-6 sm:px-10 lg:order-1 lg:px-14 lg:py-28 xl:px-20">
-          <motion.p className="flex items-center gap-3 text-sm text-oak-soft" {...rise(0.05)}>
+    <section id="home" className="relative isolate min-h-[100svh] overflow-hidden bg-walnut-deep text-paper">
+      <Image
+        src="/hero/stage-3.jpg"
+        alt="صالة بتكسية خشب ووحدة تلفزيون ومكتبة من شغل خشبة"
+        fill
+        priority
+        sizes="100vw"
+        className="object-cover object-[42%_center]"
+      />
+      <div className="absolute inset-0 bg-[linear-gradient(90deg,rgb(22_13_7/.12)_0%,rgb(22_13_7/.25)_35%,rgb(22_13_7/.92)_72%,rgb(22_13_7/.98)_100%)]" />
+      <div className="absolute inset-x-0 top-0 h-44 bg-gradient-to-b from-black/40 to-transparent" />
+      <div className="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-t from-walnut-deep via-walnut-deep/45 to-transparent" />
+
+      <div className="relative mx-auto flex min-h-[100svh] max-w-6xl items-end px-5 pb-8 pt-28 sm:px-8 sm:pb-12 lg:items-center lg:pb-0">
+        <div className="max-w-xl lg:ms-auto lg:w-[48%] lg:pb-4">
+          <motion.p className="flex items-center gap-3 text-sm font-semibold text-oak-soft" {...rise(0.05)}>
             <span className="h-px w-8 bg-oak-soft/70" />
             ورشة خشبة · القاهرة
           </motion.p>
 
-          <h1 className="mt-5 text-[clamp(2.35rem,4.6vw,4.5rem)] font-extrabold leading-[1.18]">
+          <h1 className="mt-5 text-[clamp(3rem,6vw,6.2rem)] font-extrabold leading-[.98] tracking-[-.045em]">
             <motion.span className="block" {...rise(0.12)}>
-              أثاث خشب
+              خشب يتفصّل
             </motion.span>
             <motion.span className="block text-oak-soft" {...rise(0.2)}>
-              على مقاس البيت.
+              لحياتك.
             </motion.span>
           </h1>
 
-          <motion.p className="mt-5 max-w-md text-base leading-8 text-paper/75 sm:text-[17px]" {...rise(0.28)}>
-            ابعت صورة المساحة، واحنا نساعدك تختار قطعة خشب تليق عليها. بنقيس، ننفّذ في الورشة، ونركّب لحد باب البيت.
+          <motion.p className="mt-6 max-w-lg text-base leading-8 text-paper/80 sm:text-lg" {...rise(0.28)}>
+            ابعت صورة مساحتك، ونساعدك تختار قطعة عملية وتليق ببيتك — من الفكرة لحد التركيب.
           </motion.p>
 
           <motion.div className="mt-8 flex flex-col gap-3 sm:flex-row" {...rise(0.36)}>
             <button
               onClick={() => scrollToId("brief")}
-              className="group inline-flex h-14 items-center justify-center gap-2 rounded-2xl bg-oak px-7 text-base font-semibold text-walnut-deep shadow-[0_10px_30px_-12px_rgb(184_135_90/0.9)] transition active:scale-[0.98]"
+              className="group inline-flex h-15 min-h-14 items-center justify-center gap-2 rounded-full bg-oak px-7 text-base font-bold text-walnut-deep shadow-[0_18px_45px_-20px_rgb(0_0_0/.9)] transition hover:bg-oak-soft active:scale-[0.98]"
             >
               <Sparkles className="h-5 w-5" />
-              ابدأ من صورتك
+              ابدأ من صورة المكان
               <ArrowLeft className="h-5 w-5 transition group-hover:-translate-x-1" />
             </button>
             <button
               onClick={() => scrollToId("advisor")}
-              className="inline-flex h-14 items-center justify-center gap-2 rounded-2xl border border-paper/20 px-7 text-base font-semibold transition hover:bg-paper/10 active:scale-[0.98]"
+              className="inline-flex h-15 min-h-14 items-center justify-center gap-2 rounded-full border border-paper/25 bg-black/10 px-6 text-base font-semibold backdrop-blur-sm transition hover:bg-paper/10 active:scale-[0.98]"
             >
               <MessageCircle className="h-5 w-5" />
-              مش عارف تختار؟ ساعدني
+              ساعدني أختار
             </button>
           </motion.div>
 
-          <motion.dl
-            className="mt-7 grid grid-cols-3 gap-4 border-t border-paper/15 pt-5 sm:mt-10 sm:pt-6"
-            {...rise(0.46)}
-          >
+          <motion.dl className="mt-9 grid grid-cols-3 gap-2 border-t border-paper/15 pt-5" {...rise(0.46)}>
             {FACTS.map((f) => (
-              <div key={f.k}>
-                <dt className="text-[11px] font-semibold tracking-wide text-oak-soft/80">{f.k}</dt>
-                <dd className="mt-1.5 text-sm font-semibold leading-6 text-paper">{f.v}</dd>
+              <div key={f.k} className="border-s border-paper/15 ps-3 first:border-s-0 first:ps-0">
+                <dt className="text-[11px] font-semibold text-oak-soft/80">{f.k}</dt>
+                <dd className="mt-1 text-sm font-bold leading-6 text-paper">{f.v}</dd>
               </div>
             ))}
           </motion.dl>
-        </div>
-
-        <div className="relative order-1 min-h-[36svh] sm:min-h-[46svh] lg:order-2 lg:min-h-[100svh]">
-          <Image
-            src="/hero/stage-3.jpg"
-            alt="صالة بتكسية خشب ووحدة تلفزيون ومكتبة"
-            fill
-            priority
-            sizes="(min-width: 1024px) 50vw, 100vw"
-            className="object-cover"
-          />
-          <div className="pointer-events-none absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-black/60 to-transparent" />
-          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-walnut-deep to-transparent lg:hidden" />
         </div>
       </div>
     </section>
