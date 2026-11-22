@@ -44,7 +44,7 @@ export function Hero() {
           </h1>
 
           <motion.p className="mt-5 max-w-md text-base leading-8 text-paper/75 sm:text-[17px]" {...rise(0.28)}>
-            مكتبات، وحدات، وتكسية جدران من خشب طبيعي. بنقيس المكان، ننفّذ في الورشة، ونركّب لحد باب البيت.
+            ابعت صورة المساحة، واحنا نساعدك تختار قطعة خشب تليق عليها. بنقيس، ننفّذ في الورشة، ونركّب لحد باب البيت.
           </motion.p>
 
           <motion.div className="mt-8 flex flex-col gap-3 sm:flex-row" {...rise(0.36)}>
@@ -53,7 +53,7 @@ export function Hero() {
               className="group inline-flex h-14 items-center justify-center gap-2 rounded-2xl bg-oak px-7 text-base font-semibold text-walnut-deep shadow-[0_10px_30px_-12px_rgb(184_135_90/0.9)] transition active:scale-[0.98]"
             >
               <Sparkles className="h-5 w-5" />
-              اقترح لي قطعة
+              صوّر مكانك وخد اقتراح
               <ArrowLeft className="h-5 w-5 transition group-hover:-translate-x-1" />
             </button>
             <a
@@ -63,7 +63,7 @@ export function Hero() {
               className="inline-flex h-14 items-center justify-center gap-2 rounded-2xl border border-paper/20 px-7 text-base font-semibold transition hover:bg-paper/10 active:scale-[0.98]"
             >
               <WhatsAppIcon className="h-5 w-5" />
-              كلّمنا واتساب
+              ابدأ طلبك على واتساب
             </a>
           </motion.div>
 

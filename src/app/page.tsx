@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Header, scrollToId } from "@/components/site/header";
 import { Hero } from "@/components/site/hero";
 import { Collections, Marquee } from "@/components/site/collections";
+import { QuickBrief } from "@/components/site/quick-brief";
 import { Advisor } from "@/components/site/advisor";
 import { Gallery } from "@/components/site/gallery";
 import { Story } from "@/components/site/story";
@@ -24,6 +25,7 @@ export default function Home() {
             setTimeout(() => scrollToId("gallery"), 350);
           }}
         />
+        <QuickBrief />
         <Advisor />
         <Gallery filter={filter} setFilter={setFilter} />
         <Story />
