@@ -12,6 +12,7 @@ import { cn } from "@/lib/utils";
 import { Eyebrow, Reveal } from "./motion";
 
 const WORDS = ["زان", "جوز", "بلط", "رماد", "صناعة يدوية", "حسب المقاس", "تشطيب يدوم", "من الورشة لبيتك"];
+const FEATURED_IDS = ["tv_units", "wall_cladding", "bookcases", "partitions"];
 
 export function Marquee() {
   const row = [...WORDS, ...WORDS];
@@ -31,28 +32,31 @@ export function Marquee() {
 
 export function Collections({ onOpenGallery }: { onOpenGallery: (categoryId: string) => void }) {
   const [active, setActive] = useState<Category | null>(null);
+  const featured = FEATURED_IDS.map((id) => CATEGORIES.find((category) => category.id === id)).filter(
+    (category): category is Category => Boolean(category),
+  );
 
   return (
     <section id="collections" className="scroll-mt-16 py-20 sm:py-28">
       <div className="mx-auto max-w-6xl px-5 sm:px-8">
         <Reveal className="flex items-end justify-between gap-6">
           <div>
-            <Eyebrow>الأقسام</Eyebrow>
+            <Eyebrow>الأكثر طلبًا</Eyebrow>
             <h2 className="mt-3 text-3xl font-extrabold leading-tight text-walnut sm:text-5xl">
-              كل قطعة
+              ابدأ بقطعة
               <br />
-              بتتعمل على مقاسك
+              تغيّر مساحة كاملة.
             </h2>
           </div>
           <p className="hidden max-w-xs text-sm leading-7 text-muted-foreground md:block">
-            {CATEGORIES.length} أقسام من الخشب الطبيعي — اختار اللي يناسبك وإحنا نظبطه على مساحتك.
+            ركّزنا لك على أكثر قطع بتظهر فرق واضح في البيت. كلهم يتعملوا على مقاس مساحتك.
           </p>
         </Reveal>
       </div>
 
       {/* Phone: swipeable row. Desktop: grid. */}
       <div className="no-scrollbar mt-10 flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-px-5 px-5 pb-2 md:mx-auto md:grid md:max-w-6xl md:grid-cols-3 md:gap-6 md:overflow-visible md:px-8 lg:grid-cols-4">
-        {CATEGORIES.map((c, i) => (
+        {featured.map((c, i) => (
           <Reveal key={c.id} delay={Math.min(i, 4) * 0.06} className="shrink-0 snap-start">
             <button
               onClick={() => setActive(c)}
@@ -81,6 +85,16 @@ export function Collections({ onOpenGallery }: { onOpenGallery: (categoryId: str
           </Reveal>
         ))}
         <span className="w-1 shrink-0 md:hidden" aria-hidden />
+      </div>
+
+      <div className="mx-auto mt-8 flex max-w-6xl justify-center px-5 sm:px-8">
+        <button
+          onClick={() => onOpenGallery("all")}
+          className="inline-flex items-center gap-2 rounded-full border border-walnut/15 px-5 py-3 text-sm font-bold text-walnut transition hover:border-oak hover:bg-linen"
+        >
+          شوف كل الشغل والأقسام
+          <ArrowLeft className="h-4 w-4" />
+        </button>
       </div>
 
       <CategoryDrawer

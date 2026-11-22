@@ -11,10 +11,10 @@ import { cn } from "@/lib/utils";
 import { EASE } from "./motion";
 
 export const NAV = [
-  { id: "collections", label: "الأقسام" },
+  { id: "brief", label: "ابدأ طلبك" },
+  { id: "collections", label: "اختار قطعة" },
+  { id: "gallery", label: "شغلنا" },
   { id: "advisor", label: "اقترح لي" },
-  { id: "gallery", label: "المعرض" },
-  { id: "story", label: "حكايتنا" },
   { id: "contact", label: "تواصل" },
 ];
 
@@ -73,18 +73,16 @@ export function Header() {
                 {n.label}
               </button>
             ))}
-            <a
-              href={buildWhatsAppLink("السلام عليكم، عايز أبدأ قطعة من خشبة")}
-              target="_blank"
-              rel="noopener noreferrer"
+            <button
+              onClick={() => go("brief")}
               className={cn(
                 "ms-2 inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold transition",
                 solid ? "bg-walnut text-paper hover:bg-walnut-deep" : "bg-paper text-walnut hover:bg-linen"
               )}
             >
               <WhatsAppIcon className="h-4 w-4" />
-              ابدأ قطعتك
-            </a>
+              ابدأ طلبك
+            </button>
           </nav>
 
           <button
